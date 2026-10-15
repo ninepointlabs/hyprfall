@@ -61,9 +61,9 @@ QtObject {
 
   function rebuild() {
     roles = {
-      hair: "#1b1b20", skin: "#e2aa84", skinShade: "#b9805e", stubble: "#7d5c4b",
-      shades: "#0d0d12", glint: cyan, shirt: accent, shirtShade: Qt.darker(accent, 1.4),
-      jeans: "#34446e", jeansShade: "#232f50", shoes: "#ececec", dead: "#101014",
+      hair: "#5e3d26", hairShine: "#94653f", skin: "#e8b896", beard: "#4a3020",
+      tee: "#17171c", teeLogo: accent,
+      jeans: "#4d6d9a", jeansShade: "#34507a", shoes: "#ececec", dead: "#101014",
       gator: green, gatorShade: Qt.darker(green, 1.8), eye: "#f4f1d8", pupil: "#101014",
       teeth: "#f4f4f4", mouth: Qt.darker(red, 1.6),
       log: "#8b5a2b", logShade: "#5f3b1a", logEnd: "#c9955c",

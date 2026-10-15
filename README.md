@@ -7,14 +7,14 @@ ran right for about a thousand screens, and screamed at a crocodile. That
 crocodile still owes you an apology.
 
 **Hyprfall** is a jungle platformer in that spirit, built as a native Omarchy
-app. Our hero (a certain Danish racing driver with swept-back hair, stubble
-and shades) has twenty minutes to find 32 treasures scattered across 255
+app. Our hero (a certain Danish racing driver with shoulder-length hair, a
+beard and a black tee) has twenty minutes to find 32 treasures scattered across 255
 screens of jungle. Between him and the loot: tarballs, dependency hell, a
 python, the odd dumpster fire, and a swamp full of gators holding picket
 signs that say **NO AI**.
 
 <p align="center">
-  <img src="assets/screens/title.png" width="760" alt="Title screen: HYPRFALL over a pixel-art jungle, the hero hanging from a cable next to a yelling gator">
+  <img src="assets/screens/title.png" width="760" alt="Title screen: HYPRFALL over a pixel-art jungle, the long-haired, bearded hero hanging from a cable next to a yelling gator">
 </p>
 
 ## What's in it
@@ -56,7 +56,7 @@ signs that say **NO AI**.
 ## Native to Omarchy
 
 - **Wears your theme, the whole jungle.** The canopy is your theme's green,
-  the swamp its blue, the hero's tee its accent, the gators' angry little
+  the swamp its blue, the logo on the hero's tee its accent, the gators' angry little
   mouths its red. Run `omarchy theme set` mid-game and the jungle repaints
   itself while you play. Skin, hair and wood keep fixed colours so the hero
   stays recognisable on every theme.

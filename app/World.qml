@@ -368,8 +368,9 @@ Item {
       if (p.walk <= 0) return "stand"
       return ["run1", "run2", "run3", "run2"][Math.floor(p.walk * 10) % 4]
     }
-    x: (world.frame, p ? Math.round(p.x - 5) * world.px : 0)
-    y: (world.frame, p ? Math.round(p.y - 20) * world.px : 0)
+    x: (world.frame, p ? Math.round(p.x - 6) * world.px : 0)
+    // feet on the bottom row; hanging, the hands go on the plug instead
+    y: (world.frame, p ? Math.round(p.y - (p.mode === "vine" ? 19 : 22)) * world.px : 0)
     opacity: (world.frame, sinking ? Math.max(0, p.dying / 1.8) : 1)
   }
 

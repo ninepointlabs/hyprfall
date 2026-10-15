@@ -19,8 +19,8 @@ def sprite(name):
     return re.findall(r'"([^"]*)"', m.group(1))
 
 
-PAL = {"h": "1b1b20", "s": "e2aa84", "b": "7d5c4b", "g": "0d0d12", "G": "7dcfff", "t": "ff9e64",
-       "T": "b56f45", "j": "34446e", "J": "232f50", "w": "ececec", "P": "d6dde0", "Q": "e0af68"}
+PAL = {"h": "5e3d26", "H": "94653f", "s": "e8b896", "b": "4a3020", "e": "101014", "u": "17171c",
+       "v": "7aa2f7", "j": "4d6d9a", "J": "34507a", "w": "ececec", "P": "d6dde0", "Q": "e0af68"}
 S = 64
 img = [["16161e"] * S for _ in range(S)]
 
@@ -50,7 +50,7 @@ for i in range(40):
 for y, row in enumerate(sprite("hang")):
     for x, c in enumerate(row):
         if c in PAL:
-            fill(30 + x, 24 + y, 1, 1, PAL[c])
+            fill(29 + x, 23 + y, 1, 1, PAL[c])
 
 with tempfile.TemporaryDirectory() as tmp:
     ppm = os.path.join(tmp, "icon.ppm")
