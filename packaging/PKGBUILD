@@ -19,7 +19,7 @@ optdepends=(
 )
 checkdepends=('nodejs')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
-sha256sums=('SKIP')
+sha256sums=('31c151c63600a5d5eba60f6e196579bed3d03b250c37543b32066747702d1dcc')
 
 check() {
   cd "$pkgname-$pkgver"
