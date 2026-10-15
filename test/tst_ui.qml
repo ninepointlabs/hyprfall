@@ -76,7 +76,7 @@ Item {
       var rev = theme.revision
       theme.apply('accent = "#ff0000"\ngreen = "#00ff00"\n')
       verify(theme.revision > rev)
-      compare(String(theme.role("shirt")), "#ff0000")
+      compare(String(theme.role("teeLogo")), "#ff0000")
       compare(String(theme.canopy), "#00ff00")
     }
   }
