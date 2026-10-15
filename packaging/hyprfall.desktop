@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Hyprfall
+GenericName=Jungle platformer
+Comment=Swing on ethernet cables over tarballs and anti-AI garden gnomes. Find 32 treasures in 20 minutes.
+Exec=hyprfall
+Icon=hyprfall
+Terminal=false
+Categories=Game;ArcadeGame;
+Keywords=jungle;platformer;atari;retro;game;omarchy;
+StartupNotify=false

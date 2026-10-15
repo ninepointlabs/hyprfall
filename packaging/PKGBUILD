@@ -1,0 +1,32 @@
+# Maintainer: Tim <tim@ninepointlabs.com>
+pkgname=hyprfall
+pkgver=0.1.0
+pkgrel=1
+pkgdesc='Jungle platformer native to Omarchy: ethernet cables, tarballs and anti-AI garden gnomes'
+arch=('any')
+url='https://github.com/ninepointlabs/hyprfall'
+license=('MIT')
+depends=(
+  'bash'
+  'hicolor-icon-theme'
+  'quickshell'
+  'qt6-declarative'
+)
+optdepends=(
+  'qt6-multimedia: music and sound effects'
+  'jq: float, size and focus the window on Hyprland'
+  'libnotify: a desktop notification if Quickshell is missing'
+)
+checkdepends=('nodejs')
+source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+check() {
+  cd "$pkgname-$pkgver"
+  node test/engine.js
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  packaging/stage.sh "$pkgdir" "$pkgver"
+}

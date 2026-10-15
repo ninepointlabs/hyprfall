@@ -1,8 +1,10 @@
 #!/bin/bash
 # Hyprfall launcher.
 #
-#   hyprfall          start the game, or focus it if it's already running
-#   hyprfall --tiled  start it without floating the window
+#   hyprfall             start the game, or focus it if it's already running
+#   hyprfall --tiled     start it without floating the window
+#   hyprfall --version   print the version
+#   hyprfall --selftest  load the game headless, play a second, exit 0 if it ran
 #
 # The game is a Quickshell app (app/shell.qml). On Hyprland it opens as a
 # centered, floating 16:10 window sized to the focused monitor; nothing is
@@ -14,7 +16,39 @@ here="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
 app="$(cd "$here/../app" && pwd)"
 title="Hyprfall"
 tiled=0
-[[ ${1:-} == "--tiled" ]] && tiled=1
+
+case "${1:-}" in
+  --version)
+    echo "hyprfall $(cat "$here/../VERSION" 2>/dev/null || echo dev)"
+    exit 0
+    ;;
+  --tiled) tiled=1 ;;
+  --selftest | "") ;;
+  *) echo "usage: hyprfall [--tiled | --version | --selftest]" >&2; exit 2 ;;
+esac
+
+if ! command -v quickshell >/dev/null 2>&1; then
+  msg="Hyprfall needs Quickshell (https://quickshell.org): install your distro's quickshell package."
+  echo "hyprfall: $msg" >&2
+  command -v notify-send >/dev/null 2>&1 && notify-send "Hyprfall" "$msg" || true
+  exit 1
+fi
+
+if [[ ${1:-} == "--selftest" ]]; then
+  # No compositor needed: run offscreen with a throwaway runtime dir and
+  # state, and let shell.qml report whether the game loop actually ran.
+  tmp="$(mktemp -d)"
+  trap 'rm -rf -- "$tmp"' EXIT
+  out="$(HYPRFALL_SELFTEST=1 QT_QPA_PLATFORM=offscreen XDG_RUNTIME_DIR="$tmp" XDG_STATE_HOME="$tmp/state" \
+    timeout 30 quickshell --path "$app" 2>&1 || true)"
+  if grep -q "hyprfall: selftest ok" <<<"$out"; then
+    grep "hyprfall: selftest ok" <<<"$out"
+    exit 0
+  fi
+  echo "$out" >&2
+  echo "hyprfall: selftest FAILED" >&2
+  exit 1
+fi
 
 have_hypr() { command -v hyprctl >/dev/null 2>&1 && hyprctl version >/dev/null 2>&1; }
 

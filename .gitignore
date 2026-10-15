@@ -1,2 +1,11 @@
 __pycache__/
 *.pyc
+packaging/stage/
+packaging/src/
+packaging/pkg/
+packaging/*.tar.gz
+packaging/*.pkg.tar.zst
+packaging/*.deb
+packaging/*.rpm
+packaging/nfpm
+dist/

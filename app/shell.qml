@@ -29,6 +29,24 @@ ShellRoot {
       Component.onCompleted: { forceActiveFocus(); sfx.track = "title" }
     }
 
+    // `hyprfall --selftest`: start a game, let the real loop run for a
+    // second, report, quit. Used by the release workflow on every distro.
+    Timer {
+      running: Quickshell.env("HYPRFALL_SELFTEST") === "1"
+      interval: 300
+      onTriggered: { game.start(); check.start() }
+    }
+    Timer {
+      id: check
+      interval: 1200
+      onTriggered: {
+        var g = game.game
+        var ok = game.view === "play" && g.t > 0.5 && g.p.mode === "ground"
+        console.info(ok ? "hyprfall: selftest ok (" + g.t.toFixed(2) + "s of play, room " + g.room + ")" : "hyprfall: selftest failed: " + JSON.stringify({ view: game.view, t: g.t, mode: g.p.mode }))
+        Qt.exit(ok ? 0 : 1)
+      }
+    }
+
     // `quickshell ipc -p <app dir> call hyprfall <fn>`: drive the game from a
     // script, or raise a stuck pause from a keybinding.
     IpcHandler {

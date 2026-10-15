@@ -1,0 +1,61 @@
+# .deb and .rpm packages, built by the release workflow with nfpm
+# (https://nfpm.goreleaser.com) from the same staged tree as the Arch package:
+#
+#   packaging/stage.sh packaging/stage 0.1.0
+#   VERSION=0.1.0 nfpm package -f packaging/nfpm.yaml -p deb -t packaging/
+#
+# Needs a distribution that packages Quickshell: Debian 13 (trixie-backports)
+# and newer, Ubuntu 26.10 and newer, Fedora 43 and newer.
+name: hyprfall
+arch: all
+platform: linux
+version: ${VERSION}
+release: 1
+section: games
+priority: optional
+maintainer: Tim <tim@ninepointlabs.com>
+description: |-
+  Jungle platformer native to Omarchy.
+  Swing on ethernet cables over tarballs and anti-AI garden gnomes, and find
+  32 treasures in 20 minutes. Built on Quickshell; the jungle wears your
+  Omarchy theme.
+homepage: https://github.com/ninepointlabs/hyprfall
+license: MIT
+
+contents:
+  - src: ./stage/usr/share/hyprfall
+    dst: /usr/share/hyprfall
+    type: tree
+  - src: /usr/share/hyprfall/bin/hyprfall
+    dst: /usr/bin/hyprfall
+    type: symlink
+  - src: ./stage/usr/share/applications/hyprfall.desktop
+    dst: /usr/share/applications/hyprfall.desktop
+  - src: ./stage/usr/share/icons/hicolor/256x256/apps/hyprfall.png
+    dst: /usr/share/icons/hicolor/256x256/apps/hyprfall.png
+  - src: ./stage/usr/share/doc/hyprfall/README.md
+    dst: /usr/share/doc/hyprfall/README.md
+  - src: ./stage/usr/share/licenses/hyprfall/LICENSE
+    dst: /usr/share/licenses/hyprfall/LICENSE
+
+overrides:
+  deb:
+    depends:
+      - bash
+      - quickshell (>= 0.2)
+      - qml6-module-qtquick
+      - qml6-module-qtquick-window
+      - qml6-module-qtqml-workerscript
+    recommends:
+      - qml6-module-qtmultimedia
+      - jq
+      - libnotify-bin
+  rpm:
+    depends:
+      - bash
+      - quickshell >= 0.2
+      - qt6-qtdeclarative
+    recommends:
+      - qt6-qtmultimedia
+      - jq
+      - libnotify
