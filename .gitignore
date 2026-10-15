@@ -9,3 +9,4 @@ packaging/*.deb
 packaging/*.rpm
 packaging/nfpm
 dist/
+_site/

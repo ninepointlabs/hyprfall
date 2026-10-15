@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hyprfall: a jungle platformer for Omarchy</title>
+  <meta name="description" content="Swing on ethernet cables over tarballs and anti-AI garden gnomes. Find 32 treasures in 20 minutes. A native Omarchy game that wears your theme.">
+  <meta property="og:title" content="Hyprfall">
+  <meta property="og:description" content="A jungle platformer for Omarchy. Swing on ethernet cables, hop the anti-AI garden gnomes, find 32 treasures in 20 minutes.">
+  <meta property="og:image" content="https://hyprfall.ninepointlabs.com/img/title.webp">
+  <meta property="og:url" content="https://hyprfall.ninepointlabs.com/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/png" href="img/icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="#"><img src="img/icon.png" alt="" width="28" height="28"> Hyprfall</a>
+    <nav>
+      <a href="#features">The jungle</a>
+      <a href="#themes">Themes</a>
+      <a href="#install">Install</a>
+      <a href="https://github.com/ninepointlabs/hyprfall">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow">Insert coin · Player 1 · Omarchy</p>
+      <h1>HYPRFALL</h1>
+      <p class="tagline">Swing on the cable. Hop the gnomes. Don't fall in the <code>node_modules</code>.</p>
+
+      <div class="stage">
+        <canvas id="banner" width="1280" height="448" aria-label="The hero runs through the jungle and hops across the hats of three garden gnomes holding anti-AI picket signs"></canvas>
+      </div>
+      <div class="swatches" id="swatches" role="group" aria-label="Pick a theme"></div>
+      <p class="hint">Click a theme. That's what <code>omarchy theme set</code> does to the jungle, live, mid-swing.</p>
+
+      <div class="cta">
+        <a class="button primary" href="#install">Get it</a>
+        <a class="button" id="release-link" href="https://github.com/ninepointlabs/hyprfall/releases/latest">Latest release</a>
+      </div>
+    </section>
+
+    <section class="intro">
+      <div>
+        <h2>Remember the summer of '82?</h2>
+        <p>You held a joystick with one stiff red button, ran right for about a thousand
+          screens, and screamed at a crocodile. That crocodile still owes you an apology.</p>
+        <p><strong>Hyprfall</strong> is a jungle platformer in that spirit, built as a native
+          Omarchy app. Our hero (a certain Danish racing driver with shoulder-length hair, a
+          beard and a black tee) has twenty minutes to find 32 treasures scattered across 255
+          screens of jungle. Between him and the loot: tarballs, dependency hell, a python,
+          the odd dumpster fire, and a pit full of garden gnomes waving picket signs that
+          say <em>NO AI</em>.</p>
+      </div>
+      <img src="img/title.webp" alt="The Hyprfall title screen over a pixel-art jungle" width="1280" height="800" loading="lazy">
+    </section>
+
+    <section id="features">
+      <h2 class="center">What's out there</h2>
+      <div class="cards">
+        <article class="card">
+          <canvas class="sprite" data-sprite="hang" data-scale="4"></canvas>
+          <h3>An ethernet cable</h3>
+          <p>Jump for the plug and swing. Lean the way you want to go and let go: the swing
+            flings you across. Fumble it and enjoy the tar.</p>
+        </article>
+        <article class="card">
+          <canvas class="sprite" data-sprite="gnomeYell" data-scale="4"></canvas>
+          <h3>The anti-AI caucus</h3>
+          <p>Garden gnomes in a pit, signs up: <em>RTFM</em>, <em>STOP VIBING</em>,
+            <em>WRITE IT BY HAND</em>. Quiet, their hats are stepping stones. Yelling? Get off.</p>
+        </article>
+        <article class="card">
+          <canvas class="sprite" data-sprite="log1" data-scale="4"></canvas>
+          <h3>Rolling logs</h3>
+          <p><code>journalctl -f</code>, but it rolls at you. Costs points, not lives.
+            Jump it like it's a Monday.</p>
+        </article>
+        <article class="card">
+          <canvas class="sprite" data-sprite="snake1" data-scale="4"></canvas>
+          <h3>A python</h3>
+          <p>Bites. Should've used Ruby.</p>
+        </article>
+        <article class="card">
+          <canvas class="sprite" data-sprite="fire1" data-scale="4"></canvas>
+          <h3>Dumpster fires</h3>
+          <p>Every project has one. This one is literal, and it is not a learning opportunity.</p>
+        </article>
+        <article class="card">
+          <canvas class="sprite" data-sprite="bug1" data-scale="4"></canvas>
+          <h3>A bug in the tunnel</h3>
+          <p>Take a ladder down and every screen underground skips three up top. Mind the
+            firewalls. The bug works on its machine.</p>
+        </article>
+      </div>
+
+      <div class="loot">
+        <h3>The loot</h3>
+        <ul>
+          <li><canvas class="sprite" data-sprite="keycap" data-scale="4"></canvas><span>Golden Keycap</span><b>2,000</b></li>
+          <li><canvas class="sprite" data-sprite="ruby" data-scale="4"></canvas><span>Ruby</span><b>3,000</b></li>
+          <li><canvas class="sprite" data-sprite="idol" data-scale="4"></canvas><span>Arch Idol</span><b>4,000</b></li>
+          <li><canvas class="sprite" data-sprite="crystal" data-scale="4"></canvas><span>Hypr Crystal</span><b>5,000</b></li>
+        </ul>
+        <p>Find all 32 before the clock hits 0:00. Three lives. Falling down a hole costs 100.
+          Same 255 screens every game, so you can learn the jungle like it's 1983.</p>
+      </div>
+
+      <div class="shots">
+        <img src="img/protest.webp" alt="The hero on a gnome's hat while the gnomes yell under signs reading RTFM, NO AI and AI = SLOP" width="1280" height="800" loading="lazy">
+        <img src="img/cable.webp" alt="The hero swinging on a blue ethernet cable over a swamp" width="1280" height="800" loading="lazy">
+        <img src="img/tunnel.webp" alt="The tunnel under the jungle with a ladder and a brick firewall" width="1280" height="800" loading="lazy">
+        <img src="img/deps.webp" alt="A purple pit labelled node_modules under the cable" width="1280" height="800" loading="lazy">
+      </div>
+    </section>
+
+    <section id="themes">
+      <h2 class="center">It wears your theme. The whole jungle.</h2>
+      <p class="center narrow">The canopy is your theme's green, the swamp its blue, the logo on the
+        hero's tee its accent, the gnomes' hats its red. Change themes mid-game and the jungle
+        repaints itself while you play. Skin, hair and wood stay put, so the hero always looks
+        like himself.</p>
+      <figure class="theme-shot">
+        <img id="theme-shot" src="img/theme-tokyo-night.webp" alt="The same jungle screen in the Tokyo Night theme" width="960" height="600" loading="lazy">
+        <figcaption id="theme-caption">Tokyo Night</figcaption>
+      </figure>
+      <div class="swatches" id="swatches-2" role="group" aria-label="Pick a theme"></div>
+
+      <div class="native">
+        <div><h3>Runs on Quickshell</h3><p>The same engine as the Omarchy shell. No Electron, no browser, no emulator. On Omarchy, nothing extra to install.</p></div>
+        <div><h3>Plays nice with Hyprland</h3><p>Opens as a centered, floating 16:10 window sized to your monitor. Launch it again and it focuses the one that's open. F11 for fullscreen.</p></div>
+        <div><h3>Vim keys work</h3><p><kbd>h</kbd> <kbd>l</kbd> to run, <kbd>k</kbd> <kbd>j</kbd> to climb. Of course they do.</p></div>
+        <div><h3>Original everything</h3><p>Code, pixels and an adventure-rock soundtrack, all made from scratch. The music comes out of a little synth in the repo.</p></div>
+      </div>
+    </section>
+
+    <section id="install">
+      <h2 class="center">Install</h2>
+      <p class="center narrow">Every release ships an Arch/Omarchy package, a <code>.deb</code> and an
+        <code>.rpm</code>. Each one is installed on its distro and the game run from it before
+        the release goes out. <span id="version-note"></span></p>
+
+      <div class="installs">
+        <div class="install">
+          <h3>autonomix-cli</h3>
+          <p>Installs it from GitHub releases and keeps it updated. <a href="https://github.com/ninepointlabs/autonomix-cli">What's that?</a></p>
+          <pre><code>autonomix-cli add https://github.com/ninepointlabs/hyprfall</code></pre>
+        </div>
+        <div class="install">
+          <h3>Arch / Omarchy</h3>
+          <p><a class="asset" data-match="any.pkg.tar.zst" href="https://github.com/ninepointlabs/hyprfall/releases/latest">Download the package</a>, then:</p>
+          <pre><code data-cmd="pacman">sudo pacman -U hyprfall-*-any.pkg.tar.zst</code></pre>
+        </div>
+        <div class="install">
+          <h3>Debian 13+</h3>
+          <p><a class="asset" data-match="_all.deb" href="https://github.com/ninepointlabs/hyprfall/releases/latest">Download the .deb</a>. On Debian 13, Quickshell comes from trixie-backports; Debian 14, sid and Ubuntu 26.10+ have it built in.</p>
+          <pre><code data-cmd="apt">sudo apt install -t trixie-backports ./hyprfall_*_all.deb</code></pre>
+        </div>
+        <div class="install">
+          <h3>Fedora 43+</h3>
+          <p><a class="asset" data-match="noarch.rpm" href="https://github.com/ninepointlabs/hyprfall/releases/latest">Download the .rpm</a>, then:</p>
+          <pre><code data-cmd="dnf">sudo dnf install ./hyprfall-*.noarch.rpm</code></pre>
+        </div>
+        <div class="install wide">
+          <h3>From source, into your home directory</h3>
+          <pre><code>git clone https://github.com/ninepointlabs/hyprfall ~/Projects/hyprfall
+cd ~/Projects/hyprfall && ./install.sh</code></pre>
+        </div>
+      </div>
+
+      <h3 class="center">Controls</h3>
+      <table class="controls">
+        <tr><td><kbd>←</kbd> <kbd>→</kbd> · <kbd>h</kbd> <kbd>l</kbd> · <kbd>a</kbd> <kbd>d</kbd></td><td>Run</td></tr>
+        <tr><td><kbd>Space</kbd> (or <kbd>↑</kbd> away from ladders)</td><td>Jump</td></tr>
+        <tr><td><kbd>↑</kbd> <kbd>↓</kbd> · <kbd>k</kbd> <kbd>j</kbd></td><td>Climb; <kbd>↓</kbd> or <kbd>Space</kbd> lets go of the cable</td></tr>
+        <tr><td><kbd>P</kbd> · <kbd>Esc</kbd></td><td>Pause</td></tr>
+        <tr><td><kbd>M</kbd> · <kbd>F11</kbd></td><td>Mute · fullscreen</td></tr>
+      </table>
+    </section>
+  </main>
+
+  <footer>
+    <p>An affectionate parody. The jungle, sprites, code and music are all original; nothing here
+      comes from any 1982 cartridge, and it isn't affiliated with or endorsed by Activision,
+      Omarchy's creator, 37signals, or any gnome. The protesting gnomes are a joke at a debate,
+      not at anyone in it. They all have excellent signs.</p>
+    <p>MIT licensed · <a href="https://github.com/ninepointlabs/hyprfall">Source on GitHub</a> · Made by <a href="https://ninepointlabs.com">Ninepoint Labs</a></p>
+  </footer>
+
+  <script src="sprites.js"></script>
+  <script src="site.js"></script>
+</body>
+</html>

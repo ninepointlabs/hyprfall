@@ -2,6 +2,8 @@
 
 *Swing on the cable. Hop the gnomes. Don't fall in the node_modules.*
 
+**[hyprfall.ninepointlabs.com](https://hyprfall.ninepointlabs.com/)**
+
 Remember the summer of '82? You held a joystick with one stiff red button,
 ran right for about a thousand screens, and screamed at a crocodile. That
 crocodile still owes you an apology.
@@ -171,6 +173,7 @@ tools/snap.sh /tmp/shots start scene:protest time:3 at:164,128 shot:gnomes.png
 python3 tools/make-sounds.py # regenerate app/sounds/
 python3 tools/make-icon.py   # regenerate assets/icon.png (needs ImageMagick)
 bin/hyprfall --selftest      # run the real app headless for a second
+tools/site.sh --serve        # preview the website (site/) at http://localhost:8642
 ```
 
 Releases: bump `pkgver` in `packaging/PKGBUILD`, commit, and push a `vX.Y.Z`
