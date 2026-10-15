@@ -82,14 +82,50 @@ picket signs that say **NO AI**.
 
 ## Install
 
+### Packages
+
+Every [release](https://github.com/ninepointlabs/hyprfall/releases) ships an
+Arch/Omarchy package, a `.deb` and an `.rpm`. Each one is installed on its
+distro and the game run from it before the release goes out.
+
+**With [autonomix-cli](https://github.com/ninepointlabs/autonomix-cli)**,
+which installs and updates it from GitHub releases for you:
+
+```bash
+autonomix-cli add https://github.com/ninepointlabs/hyprfall
+```
+
+**Arch / Omarchy:**
+
+```bash
+sudo pacman -U hyprfall-0.1.0-1-any.pkg.tar.zst
+```
+
+**Debian 13+** (on Debian 13, Quickshell comes from trixie-backports; Debian
+14, sid and Ubuntu 26.10+ have it in the main archive):
+
+```bash
+sudo apt install -t trixie-backports ./hyprfall_0.1.0-1_all.deb
+```
+
+**Fedora 43+:**
+
+```bash
+sudo dnf install ./hyprfall-0.1.0-1.noarch.rpm
+```
+
+Then launch **Hyprfall** from the app launcher (Super + Space), or run
+`hyprfall`. High scores live in `~/.local/state/hyprfall/save.json`.
+
+### From source, into your home directory
+
 ```bash
 git clone https://github.com/ninepointlabs/hyprfall ~/Projects/hyprfall
 cd ~/Projects/hyprfall
 ./install.sh
 ```
 
-Then launch **Hyprfall** from the app launcher (Super + Space), or run
-`hyprfall`. The installer only writes to your home directory:
+The installer only writes to your home directory:
 
 | What | Where |
 |------|-------|
@@ -105,10 +141,13 @@ the floating window if you'd rather let Hyprland tile it.
 Want a key for it? Add this to `~/.config/hypr/bindings.lua`:
 
 ```lua
-o.bind("SUPER + SHIFT + ALT + J", "Hyprfall", "~/.local/bin/hyprfall")
+o.bind("SUPER + SHIFT + ALT + J", "Hyprfall", "hyprfall")
 ```
 
 ### Remove
+
+Packages: `sudo pacman -R hyprfall`, `sudo apt remove hyprfall` or
+`sudo dnf remove hyprfall`. A source install:
 
 ```bash
 ./install.sh --uninstall   # keeps your high scores
@@ -131,7 +170,13 @@ test/ui.sh                   # headless end-to-end UI test with real key events
 tools/snap.sh /tmp/shots start scene:protest time:3 at:164,128 shot:gnomes.png
 python3 tools/make-sounds.py # regenerate app/sounds/
 python3 tools/make-icon.py   # regenerate assets/icon.png (needs ImageMagick)
+bin/hyprfall --selftest      # run the real app headless for a second
 ```
+
+Releases: bump `pkgver` in `packaging/PKGBUILD`, commit, and push a `vX.Y.Z`
+tag. `.github/workflows/release.yml` builds all three packages, installs each
+on Arch, Debian and Fedora, runs `hyprfall --selftest` from the installed
+files, and publishes the release.
 
 The engine (`app/Engine.js`) is plain JavaScript stepped at a fixed 60 Hz, so
 node tests it directly; the QML only draws and plays sounds. The tests check

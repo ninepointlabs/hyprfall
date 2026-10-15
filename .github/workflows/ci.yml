@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    steps:
+      - name: Install dependencies
+        run: pacman -Syu --noconfirm --needed nodejs qt6-declarative qt6-multimedia quickshell
+      - uses: actions/checkout@v4
+      - name: Engine tests
+        run: node test/engine.js
+      - name: Headless UI test
+        run: test/ui.sh
+      - name: Launch the real app headless
+        run: |
+          useradd -m u
+          su u -c "cd /tmp && $GITHUB_WORKSPACE/bin/hyprfall --selftest"

@@ -1,0 +1,113 @@
+name: Release
+
+# Push a tag like v0.1.0 to build the Arch/Omarchy, .deb and .rpm packages,
+# install each on its distribution, run the game headless from the installed
+# package, and publish them.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+env:
+  NFPM_VERSION: 2.47.0
+  NFPM_SHA256: 0660ca602b2d2d2ae4781a06c692b3eeb9d437ffea05b831d76e41f4a3188783
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    steps:
+      - name: Install build dependencies
+        run: pacman -Syu --noconfirm --needed base-devel git nodejs quickshell qt6-declarative qt6-multimedia hicolor-icon-theme
+      - uses: actions/checkout@v4
+      - name: Build Arch package
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          version="${GITHUB_REF_NAME#v}"
+          grep -q "^pkgver=$version$" packaging/PKGBUILD || { echo "PKGBUILD pkgver does not match tag $GITHUB_REF_NAME"; exit 1; }
+          git archive --prefix="hyprfall-$version/" -o "packaging/hyprfall-$version.tar.gz" HEAD
+          useradd -m builder
+          chown -R builder packaging
+          cd packaging
+          su builder -c "makepkg -f --noconfirm --skipchecksums"
+          # Install it and run the game from the installed files: catches anything missing from the package.
+          pacman -U --noconfirm hyprfall-*.pkg.tar.zst
+          hyprfall --version
+          su builder -c "cd /tmp && hyprfall --selftest"
+      - name: Build .deb and .rpm
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          cd packaging
+          curl -fsSLo nfpm.tar.gz "https://github.com/goreleaser/nfpm/releases/download/v$NFPM_VERSION/nfpm_${NFPM_VERSION}_Linux_x86_64.tar.gz"
+          echo "$NFPM_SHA256  nfpm.tar.gz" | sha256sum -c -
+          tar -xzf nfpm.tar.gz nfpm && rm nfpm.tar.gz
+          ./stage.sh stage "$version"
+          VERSION="$version" ./nfpm package -f nfpm.yaml -p deb -t .
+          VERSION="$version" ./nfpm package -f nfpm.yaml -p rpm -t .
+          mkdir ../dist
+          mv hyprfall-*.pkg.tar.zst hyprfall_*.deb hyprfall-*.rpm ../dist/
+          cd ../dist && for f in *; do sha256sum "$f" > "$f.sha256"; done && ls -l
+      - uses: actions/upload-artifact@v4
+        with:
+          name: packages
+          path: dist/
+
+  # Install each package on a clean system and run the game from it.
+  test-deb:
+    needs: package
+    runs-on: ubuntu-latest
+    container: debian:trixie
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: packages
+      - run: |
+          echo "deb http://deb.debian.org/debian trixie-backports main" > /etc/apt/sources.list.d/backports.list
+          apt-get update -qq
+          DEBIAN_FRONTEND=noninteractive apt-get install -y -t trixie-backports ./hyprfall_*_all.deb
+          hyprfall --version
+          useradd -m u
+          su u -c "cd /tmp && hyprfall --selftest"
+
+  test-rpm:
+    needs: package
+    runs-on: ubuntu-latest
+    container: fedora:latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: packages
+      - run: |
+          dnf -y install ./hyprfall-*.noarch.rpm shadow-utils util-linux
+          hyprfall --version
+          useradd -m u
+          su u -c "cd /tmp && hyprfall --selftest"
+
+  publish:
+    needs: [package, test-deb, test-rpm]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: packages
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          v="${GITHUB_REF_NAME#v}"
+          notes=$(printf '%s\n' \
+            "## Install" \
+            "" \
+            "**With [autonomix-cli](https://github.com/ninepointlabs/autonomix-cli):** \`autonomix-cli add https://github.com/ninepointlabs/hyprfall\`" \
+            "" \
+            "**Arch / Omarchy:** \`sudo pacman -U hyprfall-$v-1-any.pkg.tar.zst\`" \
+            "" \
+            "**Debian 13+:** \`sudo apt install -t trixie-backports ./hyprfall_$v-1_all.deb\` (Quickshell comes from trixie-backports on Debian 13; Debian 14, sid and Ubuntu 26.10+ have it in the main archive)" \
+            "" \
+            "**Fedora 43+:** \`sudo dnf install ./hyprfall-$v-1.noarch.rpm\`" \
+            "" \
+            "Then launch **Hyprfall** from your app launcher, or run \`hyprfall\`. Each package was installed on its distro and the game run headless from it (\`hyprfall --selftest\`) before this release was published.")
+          gh release create "$GITHUB_REF_NAME" hyprfall* \
+            --repo "$GITHUB_REPOSITORY" --title "Hyprfall $GITHUB_REF_NAME" --generate-notes --notes "$notes"
