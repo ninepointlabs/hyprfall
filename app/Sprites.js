@@ -227,28 +227,48 @@ var SPRITES = {
     "............"
   ],
 
-  // -------------------------------------- the anti-AI caucus of the swamp
-  // A gator up to its eyes in the water. The sign is drawn by QML.
-  gator: [
-    "...........kkk........",
-    "..........cEEPc.......",
-    ".........ccEEPccc.....",
-    "cccccccccccccccccccc..",
-    "ccnnnnnncccccccccccccc",
-    "CCCCCCCCCCCCCCCCCCCCCC",
-    ".CCCCCCCCCCCCCCCCCCCC.",
-    "......................"
+  // ----------------------------- the anti-AI caucus of the garden pit
+  // Garden gnomes standing in a pit, hat tips level with the ground, so the
+  // tips are stepping stones. The picket signs are drawn by QML.
+  gnome: [
+    ".....rr.....",
+    ".....rrR....",
+    "....rrrR....",
+    "....rrrrR...",
+    "...rrrrrR...",
+    "...rrrrrrR..",
+    "..rrrrrrrrR.",
+    "..ffffffff..",
+    "..feffffef..",
+    "..fffnnfff..",
+    ".WWWfnnfWWW.",
+    ".WWWWWWWWWW.",
+    "cWWWWWWWWWWc",
+    "ccWWWWWWWWcc",
+    "fccWWWWWWccf",
+    "kkkkkyykkkkk",
+    "cccccccccccc",
+    ".CCCC..CCCC."
   ],
-  gatorYell: [
-    "ccc...................",
-    "cccc..................",
-    ".cccc.....kkk.........",
-    "..ccccc..cEEPc........",
-    "...nnnnccccEEPcccc....",
-    "........ccccccccccccc.",
-    "mmmmmmmmcccccccccccccc",
-    "nnnnnnnnCCCCCCCCCCCCCC",
-    "CCCCCCCCCCCCCCCCCCCCC."
+  gnomeYell: [
+    "......rr....",
+    ".....rrR....",
+    "....rrrR....",
+    "....rrrrR...",
+    "...rrrrrR...",
+    "...rrrrrrR..",
+    "..rrrrrrrrR.",
+    "..eeffffee..",
+    "f.feffffef.f",
+    "c.fffnnfff.c",
+    "cWWWfnnfWWWc",
+    "cWWWWmmWWWWc",
+    ".cWWmmmmWWc.",
+    ".cWWWmmWWWc.",
+    "..cWWWWWWc..",
+    "kkkkkyykkkkk",
+    "cccccccccccc",
+    ".CCCC..CCCC."
   ],
 
   // ---------------------------------------- rolling logs (journalctl -f)
@@ -432,7 +452,7 @@ var SPRITES = {
 var ROLES = {
   h: "hair", H: "hairShine", s: "skin", b: "beard", e: "ink", u: "tee", v: "teeLogo",
   j: "jeans", J: "jeansShade", w: "shoes", r: "skin", x: "dead",
-  c: "gator", C: "gatorShade", E: "eye", P: "pupil", n: "teeth", m: "mouth",
+  m: "mouth",
   l: "log", L: "logShade", R: "bug",
   d: "dumpster", D: "dumpsterShade", f: "fire", o: "flame", y: "gold", Y: "goldShade",
   B: "python", k: "ink", W: "shine",
@@ -443,6 +463,8 @@ var ROLES = {
 
 // Sprites that reuse a letter for something else.
 var OVERRIDES = {
+  gnome: { r: "gnomeHat", R: "gnomeHatShade", f: "gnomeSkin", e: "ink", n: "gnomeNose", c: "gnomeCoat", C: "gnomeCoatShade", m: "mouth" },
+  gnomeYell: { r: "gnomeHat", R: "gnomeHatShade", f: "gnomeSkin", e: "ink", n: "gnomeNose", c: "gnomeCoat", C: "gnomeCoatShade", m: "mouth" },
   log1: { r: "logEnd", R: "logShade" },
   log2: { r: "logEnd", R: "logShade" },
   bug1: { r: "bugSpot" },

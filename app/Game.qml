@@ -254,11 +254,11 @@ Item {
       theme: app.theme
       px: app.px
       title: "HYPRFALL"
-      art: ["hang", "gatorYell"]
+      art: ["hang", "gnomeYell"]
       subtitle: "A jungle caper for Omarchy"
       lines: [
         "Find all " + Engine.TOTAL_TREASURES + " treasures in 20 minutes.",
-        "Swing on the cable. Hop the protesters when they're quiet.",
+        "Swing on the cable. Hop the gnomes' hats when they're quiet.",
         "Mind the tarballs, the python and the dumpster fires.",
         "",
         "←/→ or h/l run   Space jump   ↑/↓ or k/j climb",

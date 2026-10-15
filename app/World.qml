@@ -152,15 +152,16 @@ Item {
     x: span ? span[0] * world.px : 0
     y: (Engine.GROUND + 1) * world.px
     width: span ? (span[1] - span[0]) * world.px : 0
-    height: 12 * world.px
+    // the gnome pit is deep enough for a gnome to stand in
+    height: (kind === "garden" ? 19 : 12) * world.px
 
     readonly property string kind: world.rm.pit ? world.rm.pit.kind : ""
-    readonly property color fill: kind === "water" ? world.theme.water : kind === "deps" ? world.theme.deps : world.theme.tar
-    readonly property color shine: kind === "water" ? world.theme.waterShine : kind === "deps" ? world.theme.depsShine : world.theme.tarShine
+    readonly property color fill: kind === "water" ? world.theme.water : kind === "deps" ? world.theme.deps : kind === "garden" ? world.theme.garden : world.theme.tar
+    readonly property color shine: kind === "water" ? world.theme.waterShine : kind === "deps" ? world.theme.depsShine : kind === "garden" ? world.theme.gardenShine : world.theme.tarShine
 
     Rectangle {
       anchors.fill: parent
-      radius: 5 * world.px
+      radius: (pit.kind === "garden" ? 2 : 5) * world.px
       color: pit.fill
     }
     Rectangle {
@@ -198,39 +199,39 @@ Item {
     }
   }
 
-  // ------------------------------------------- the anti-AI swamp caucus --
+  // ------------------------------------- the anti-AI garden gnome caucus --
   Repeater {
-    model: world.rm.crocs ? Engine.CROCS.length : 0
+    model: world.rm.gnomes ? Engine.GNOMES.length : 0
     Item {
-      id: croc
+      id: gnome
       required property int index
-      readonly property real cx: Engine.CROCS[index]
-      readonly property bool yelling: (world.frame, Engine.crocOpen(world.t))
+      readonly property real cx: Engine.GNOMES[index]
+      readonly property bool yelling: (world.frame, Engine.gnomesYelling(world.t))
       readonly property real bob: yelling ? Math.round(Math.sin(world.t * 18 + index) * 1.5) : 0
 
       // the picket sign, held up behind the head
       Rectangle {
-        x: (croc.cx + 11) * world.px
-        y: (Engine.GROUND - 18 + croc.bob - (croc.yelling ? 4 : 0)) * world.px
+        x: (gnome.cx + 8) * world.px
+        y: (Engine.GROUND - 18 + gnome.bob - (gnome.yelling ? 4 : 0)) * world.px
         width: world.px
-        height: (20 + (croc.yelling ? 4 : 0)) * world.px
+        height: (20 + (gnome.yelling ? 4 : 0)) * world.px
         color: world.theme.trunk
       }
       Rectangle {
         id: sign
         width: 26 * world.px
         height: 13 * world.px
-        x: (croc.cx + 11.5) * world.px - width / 2
-        y: (Engine.GROUND - 30 + croc.bob - (croc.yelling ? 4 : 0)) * world.px
+        x: (gnome.cx + 8.5) * world.px - width / 2
+        y: (Engine.GROUND - 30 + gnome.bob - (gnome.yelling ? 4 : 0)) * world.px
         color: world.theme.sign
         border.color: world.theme.trunkShade
         border.width: Math.max(1, world.px / 2)
-        rotation: croc.yelling ? Math.sin(world.t * 14 + croc.index) * 8 : 0
+        rotation: gnome.yelling ? Math.sin(world.t * 14 + gnome.index) * 8 : 0
         Text {
           anchors.centerIn: parent
           width: parent.width - 2 * world.px
           horizontalAlignment: Text.AlignHCenter
-          text: world.signs[(world.rm.id + croc.index * 3) % world.signs.length]
+          text: world.signs[(world.rm.id + gnome.index * 3) % world.signs.length]
           color: world.theme.signInk
           font.family: world.theme.font
           font.bold: true
@@ -245,15 +246,15 @@ Item {
       PixelArt {
         theme: world.theme
         px: world.px
-        sprite: croc.yelling ? "gatorYell" : "gator"
-        x: (croc.cx - 11) * world.px
-        y: (Engine.GROUND - 2 - (croc.yelling ? 1 : 0)) * world.px
+        sprite: gnome.yelling ? "gnomeYell" : "gnome"
+        x: (gnome.cx - 6) * world.px
+        y: (Engine.GROUND + (gnome.yelling ? gnome.bob : 0)) * world.px
       }
       Text {
-        visible: croc.yelling
-        text: ["NO!", "BOO!", "SLOP!"][(croc.index + world.rm.id) % 3]
-        x: (croc.cx - 20) * world.px
-        y: (Engine.GROUND - 12 - croc.bob) * world.px
+        visible: gnome.yelling
+        text: ["NO!", "BOO!", "SLOP!"][(gnome.index + world.rm.id) % 3]
+        x: (gnome.cx - 22) * world.px
+        y: (Engine.GROUND - 10 - gnome.bob) * world.px
         color: world.theme.red
         font.family: world.theme.font
         font.bold: true

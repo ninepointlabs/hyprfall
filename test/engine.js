@@ -11,7 +11,7 @@ const assert = require("assert")
 
 const source = fs.readFileSync(path.join(__dirname, "..", "app", "Engine.js"), "utf8").replace(/^\.pragma library\s*/m, "")
 const ctx = {}
-vm.runInNewContext(source + "\nthis.E = { next, prev, walk, room, newGame, step, vineTip, pitSpan, crocOpen, floorAt, treasureRooms, recordScore, sanitizeScores, clock, SCENES, TOTAL_TREASURES, START_ROOM, GROUND, TUNNEL, W, DT, PIT, CROCS, LADDER_X, TUNNEL_SKIP }", ctx)
+vm.runInNewContext(source + "\nthis.E = { next, prev, walk, room, newGame, step, vineTip, pitSpan, gnomesYelling, floorAt, treasureRooms, recordScore, sanitizeScores, clock, SCENES, TOTAL_TREASURES, START_ROOM, GROUND, TUNNEL, W, DT, PIT, GNOMES, LADDER_X, TUNNEL_SKIP }", ctx)
 const E = ctx.E
 
 let passed = 0
@@ -151,6 +151,32 @@ for (const scene of ["tar", "swamp", "protest-cable", "deps"]) {
   })
 }
 
+test("letting go of the cable carries you, even at the end of the swing", () => {
+  const r = firstRoom((rm) => rm.scene === "swamp")
+  // hanging on, swinging right, at the far end of the swing (tip barely moving)
+  const s = standing(r, 160, 0)
+  const quarter = 3.2 / 4
+  s.t = quarter - E.DT
+  s.p.mode = "vine"
+  s.p.face = 1
+  run(s, 1, NONE)
+  const x0 = s.p.x
+  run(s, 1, { down: true })
+  assert.strictEqual(s.p.mode, "air")
+  run(s, 120, NONE)
+  assert.strictEqual(s.p.mode, "ground", "landed: " + s.p.mode + " " + s.cause)
+  assert(s.p.x - x0 >= 40, "only drifted " + (s.p.x - x0).toFixed(1) + "px")
+
+  // leaning back the other way flies back the other way
+  const b = standing(r, 160, 0)
+  b.t = quarter - E.DT
+  b.p.mode = "vine"
+  b.p.face = 1
+  run(b, 1, { left: true })
+  run(b, 1, { left: true, jump: true })
+  assert(b.p.vx < -60, "vx " + b.p.vx)
+})
+
 test("protesters can be hopped head to head", () => {
   const r = firstRoom((rm) => rm.scene === "protest")
   let ok = 0
@@ -166,7 +192,7 @@ test("protesters can be hopped head to head", () => {
 
 test("yelling protesters are fatal, quiet ones are stepping stones", () => {
   const r = firstRoom((rm) => rm.scene === "protest")
-  const s = standing(r, E.CROCS[1], 0)
+  const s = standing(r, E.GNOMES[1], 0)
   run(s, 60, NONE)
   assert.strictEqual(s.p.mode, "ground")
   run(s, 120, NONE)

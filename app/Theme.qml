@@ -5,7 +5,7 @@ import Quickshell.Io
 // The current Omarchy theme's colours, read from
 // ~/.local/state/omarchy/current/theme/colors.toml and re-read whenever the
 // theme changes, so `omarchy theme set` repaints the jungle live. The canopy
-// is the theme's green, the swamp its blue, the hero's tee its accent, and so
+// is the theme's green, the swamp its blue, and so
 // on; skin, hair and wood keep fixed colours so the hero stays recognisable.
 QtObject {
   id: root
@@ -49,6 +49,8 @@ QtObject {
   readonly property color waterShine: Qt.lighter(blue, 1.35)
   readonly property color tar: "#0c0c0f"
   readonly property color tarShine: "#2a2a33"
+  readonly property color garden: Qt.darker(yellow, 3.2)
+  readonly property color gardenShine: Qt.darker(green, 1.2)
   readonly property color deps: Qt.darker(magenta, 1.6)
   readonly property color depsShine: magenta
   readonly property color cable: blue
@@ -64,8 +66,8 @@ QtObject {
       hair: "#5e3d26", hairShine: "#94653f", skin: "#e8b896", beard: "#4a3020",
       tee: "#17171c", teeLogo: accent,
       jeans: "#4d6d9a", jeansShade: "#34507a", shoes: "#ececec", dead: "#101014",
-      gator: green, gatorShade: Qt.darker(green, 1.8), eye: "#f4f1d8", pupil: "#101014",
-      teeth: "#f4f4f4", mouth: Qt.darker(red, 1.6),
+      gnomeHat: red, gnomeHatShade: Qt.darker(red, 1.5), gnomeSkin: "#f2c4a4", gnomeNose: "#e0866a",
+      gnomeCoat: blue, gnomeCoatShade: Qt.darker(blue, 1.6), mouth: Qt.darker(red, 1.9),
       log: "#8b5a2b", logShade: "#5f3b1a", logEnd: "#c9955c",
       bug: red, bugSpot: yellow,
       dumpster: "#4b6354", dumpsterShade: "#33443a", fire: red, flame: "#ff8c1a",

@@ -1,6 +1,6 @@
 # Hyprfall
 
-*Swing on the cable. Hop the protesters. Don't fall in the node_modules.*
+*Swing on the cable. Hop the gnomes. Don't fall in the node_modules.*
 
 Remember the summer of '82? You held a joystick with one stiff red button,
 ran right for about a thousand screens, and screamed at a crocodile. That
@@ -10,11 +10,11 @@ crocodile still owes you an apology.
 app. Our hero (a certain Danish racing driver with shoulder-length hair, a
 beard and a black tee) has twenty minutes to find 32 treasures scattered across 255
 screens of jungle. Between him and the loot: tarballs, dependency hell, a
-python, the odd dumpster fire, and a swamp full of gators holding picket
-signs that say **NO AI**.
+python, the odd dumpster fire, and a pit full of garden gnomes holding
+picket signs that say **NO AI**.
 
 <p align="center">
-  <img src="assets/screens/title.png" width="760" alt="Title screen: HYPRFALL over a pixel-art jungle, the long-haired, bearded hero hanging from a cable next to a yelling gator">
+  <img src="assets/screens/title.png" width="760" alt="Title screen: HYPRFALL over a pixel-art jungle, the long-haired, bearded hero hanging from a cable next to a yelling garden gnome">
 </p>
 
 ## What's in it
@@ -22,11 +22,12 @@ signs that say **NO AI**.
 - **255 screens of jungle in a ring.** Each screen comes from one byte,
   walked with a reversible 8-bit LFSR, so walking left brings back exactly
   the screens you passed. Same jungle every game; learn it like it's 1983.
-- **An ethernet cable to swing on.** Jump for the plug, ride it across, let
-  go with ↓ or Space on the far side. Fumble it and enjoy the tar.
-- **The anti-AI caucus of the swamp.** Gators up to their eyes in water,
-  waving signs like *RTFM*, *STOP VIBING* and *WRITE IT BY HAND*. When
-  they're quiet, their heads are stepping stones. When they start yelling,
+- **An ethernet cable to swing on.** Jump for the plug, ride it across, and
+  let go with ↓ or Space. Hold the way you want to go and the swing flings
+  you that way. Fumble it and enjoy the tar.
+- **The anti-AI caucus of the garden pit.** Garden gnomes standing in a
+  pit, waving signs like *RTFM*, *STOP VIBING* and *WRITE IT BY HAND*. When
+  they're quiet, their hats are stepping stones. When they start yelling,
   get off.
 - **Things that roll and burn.** Rolling logs (`journalctl -f`) knock points
   off but won't kill you. A python will (should've used Ruby), and so will
@@ -45,7 +46,7 @@ signs that say **NO AI**.
   generated from scratch by a little synth in `tools/make-sounds.py`.
 
 <p align="center">
-  <img src="assets/screens/protest.png" width="49%" alt="The hero standing on a gator's head in a blue swamp while three gators yell NO, BOO and SLOP under signs reading RTFM, NO AI and AI = SLOP">
+  <img src="assets/screens/protest.png" width="49%" alt="The hero standing on a garden gnome's hat in a dirt pit while three gnomes yell NO, BOO and SLOP under signs reading RTFM, NO AI and AI = SLOP">
   <img src="assets/screens/cable.png" width="49%" alt="The hero swinging on a blue ethernet cable over the swamp">
 </p>
 <p align="center">
@@ -56,8 +57,8 @@ signs that say **NO AI**.
 ## Native to Omarchy
 
 - **Wears your theme, the whole jungle.** The canopy is your theme's green,
-  the swamp its blue, the logo on the hero's tee its accent, the gators' angry little
-  mouths its red. Run `omarchy theme set` mid-game and the jungle repaints
+  the swamp its blue, the logo on the hero's tee its accent, the gnomes'
+  hats its red and their coats its blue. Run `omarchy theme set` mid-game and the jungle repaints
   itself while you play. Skin, hair and wood keep fixed colours so the hero
   stays recognisable on every theme.
 - **Runs on Quickshell,** the same engine as the Omarchy shell. No Electron,
@@ -127,7 +128,7 @@ palette.
 ```bash
 node test/engine.js          # engine: the LFSR ring, every screen crossable, fuzzed random play
 test/ui.sh                   # headless end-to-end UI test with real key events
-tools/snap.sh /tmp/shots start scene:protest time:3 at:164,128 shot:gators.png
+tools/snap.sh /tmp/shots start scene:protest time:3 at:164,128 shot:gnomes.png
 python3 tools/make-sounds.py # regenerate app/sounds/
 python3 tools/make-icon.py   # regenerate assets/icon.png (needs ImageMagick)
 ```
@@ -142,7 +143,7 @@ tweak that makes a swamp impossible fails CI instead of your evening.
 An affectionate parody. The jungle, the sprites, the code and the music are
 all original; nothing here comes from any 1982 cartridge, and this isn't
 affiliated with or endorsed by Activision, Omarchy's creator, 37signals, or
-any gator. The hero is a fond caricature. The protesting gators are a joke
+any gnome. The hero is a fond caricature. The protesting gnomes are a joke
 at a debate, not at anyone in it; some of them make good points, and they
 all have excellent signs.
 

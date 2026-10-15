@@ -33,8 +33,9 @@ var HALF = 4              // half the player's width
 
 var LADDER_X = 160
 var VINE = { x: 160, y: 28, len: 74, amp: 0.7, period: 3.2 }
+var RELEASE_MAX = 190     // fastest you can leave the cable, px/s
 var PIT = { left: 100, right: 220 }
-var CROCS = [120, 164, 208]   // a jump apart (2 * JUMP_V / GRAVITY * WALK = 44px)
+var GNOMES = [120, 164, 208]   // a jump apart (2 * JUMP_V / GRAVITY * WALK = 44px)
 var TREASURE_X = 266
 var WALL_W = 8
 
@@ -51,7 +52,8 @@ var DEATHS = {
   splash: "Fell in the swamp. The protesters cheered.",
   tar: "Sank in a tarball. Should have used --strip-components.",
   deps: "Swallowed by dependency hell.",
-  chomp: "Got yelled at by the anti-AI caucus.",
+  chomp: "Got yelled at by the anti-AI garden gnomes.",
+  garden: "Fell in the gnome pit. They'll never let you forget it.",
   fire: "Walked into a dumpster fire.",
   snake: "Bitten by a python. Should have used Ruby.",
   bug: "Stung by a bug. It works on my machine.",
@@ -91,7 +93,7 @@ function room(r) {
     ladder: scene === "hole" || scene === "holes",
     holes: scene === "hole" ? [[152, 168]] : scene === "holes" ? [[96, 112], [152, 168], [208, 224]] : [],
     pit: null,
-    crocs: scene === "protest" || scene === "protest-cable",
+    gnomes: scene === "protest" || scene === "protest-cable",
     vine: scene === "tar" || scene === "swamp" || scene === "protest-cable" || scene === "deps",
     treasure: scene === "treasure" ? TREASURES[obj & 3] : null,
     logs: [],
@@ -101,7 +103,8 @@ function room(r) {
     bug: false
   }
   if (scene === "tar") rm.pit = { kind: "tar", shifting: false }
-  else if (scene === "swamp" || rm.crocs) rm.pit = { kind: "water", shifting: false }
+  else if (scene === "swamp") rm.pit = { kind: "water", shifting: false }
+  else if (rm.gnomes) rm.pit = { kind: "garden", shifting: false }
   else if (scene === "treasure") rm.pit = { kind: "tar", shifting: true }
   else if (scene === "deps") rm.pit = { kind: "deps", shifting: true }
 
@@ -142,7 +145,7 @@ var TOTAL_TREASURES = treasureRooms().length
 
 // The protesters keep their signs down most of the time, then all start
 // yelling at once. Standing on a yelling head is fatal.
-function crocOpen(t) { return (t % 4) > 2.6 }
+function gnomesYelling(t) { return (t % 4) > 2.6 }
 
 // Shifting pits: open, closing, closed, opening over 8 seconds.
 function pitSpan(rm, t) {
@@ -186,9 +189,9 @@ function floorAt(s, rm, x, under) {
   if (holeAt(rm, x)) return null
   var span = pitSpan(rm, s.t)
   if (span && span[1] - span[0] > 1 && within(x, span)) {
-    if (rm.crocs)
-      for (var c = 0; c < CROCS.length; c++)
-        if (Math.abs(x - CROCS[c]) <= 9) return GROUND
+    if (rm.gnomes)
+      for (var c = 0; c < GNOMES.length; c++)
+        if (Math.abs(x - GNOMES[c]) <= 9) return GROUND
     return null
   }
   return GROUND
@@ -311,10 +314,14 @@ function step(s, input) {
     var tip = vineTip(s.t)
     p.x = tip.x
     p.y = tip.y + HEIGHT - 2
+    // lean the way you want to go; that's where you'll fly when you let go
+    if (dir) p.face = dir
     if (jumpEdge || input.down) {
+      // let go with a kick: the swing's own speed carries you, plus a running
+      // start in the direction you're facing, plus a hop up off the plug
       p.mode = "air"
-      p.vx = tip.vx + p.face * 60
-      p.vy = Math.min(tip.vy, 0) - 80
+      p.vx = Math.max(-RELEASE_MAX, Math.min(RELEASE_MAX, tip.vx * 1.4 + p.face * WALK * 1.2))
+      p.vy = Math.min(tip.vy, 0) * 0.5 - 150
       p.cooldown = 0.45
       emit(s, "release")
     }
@@ -476,9 +483,9 @@ function hazards(s, rm) {
       var top = rm.hazard.kind === "fire" ? GROUND - 10 : GROUND - 12
       if (overlap(x0 + 1, y0, x1 - 1, y1, hx - 5, top, hx + 5, GROUND)) { die(s, rm.hazard.kind); return }
     }
-    if (rm.crocs && p.mode === "ground" && crocOpen(s.t)) {
-      for (var c = 0; c < CROCS.length; c++)
-        if (p.x >= CROCS[c] - 8 && p.x <= CROCS[c] + 4) { die(s, "chomp"); return }
+    if (rm.gnomes && p.mode === "ground" && gnomesYelling(s.t)) {
+      for (var c = 0; c < GNOMES.length; c++)
+        if (p.x >= GNOMES[c] - 8 && p.x <= GNOMES[c] + 4) { die(s, "chomp"); return }
     }
     if (rm.treasure && !s.collected[rm.id] &&
         overlap(x0, y0, x1, y1, TREASURE_X - 6, GROUND - 12, TREASURE_X + 6, GROUND)) {
