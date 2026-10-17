@@ -57,6 +57,7 @@ ShellRoot {
       }
       function pause(): string { if (game.view === "play") game.view = "paused"; return game.view }
       function start(): string { game.start(); return "ok" }
+      function about(): string { game.openAbout(); return game.view }
       // Saves a PNG of the stage; only ever under ~/.cache, only .png.
       function shot(path: string): string {
         var allowed = Quickshell.env("HOME") + "/.cache/"

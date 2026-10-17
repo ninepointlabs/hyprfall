@@ -2,7 +2,7 @@ import QtQuick
 import "Engine.js" as Engine
 
 // The game screen: the 60 Hz loop, the keyboard, the HUD and the title,
-// pause, game over and victory cards. The jungle itself is World.qml.
+// pause, game over, victory and About cards. The jungle itself is World.qml.
 Item {
   id: app
 
@@ -11,8 +11,14 @@ Item {
   property var sfx
   property var window
 
-  // "title", "play", "paused", "over", "won"
+  // "title", "play", "paused", "over", "won", "about"
   property string view: "title"
+  // where Esc goes back to from About; a run in progress comes back paused
+  property string aboutFrom: "title"
+  readonly property bool onTitle: view === "title" || (view === "about" && aboutFrom === "title")
+  // About's Email button; off in tests so nothing reaches a mail client
+  property bool externalLinks: true
+  property string lastExternalUrl: ""
   property var game: Engine.newGame()
   property int frame: 0
   property real acc: 0
@@ -48,6 +54,18 @@ Item {
     dirs[Qt.Key_Up] = "up"; dirs[Qt.Key_W] = "up"; dirs[Qt.Key_K] = "up"
     dirs[Qt.Key_Down] = "down"; dirs[Qt.Key_S] = "down"; dirs[Qt.Key_J] = "down"
     dirs[Qt.Key_Space] = "jump"; dirs[Qt.Key_Z] = "jump"; dirs[Qt.Key_X] = "jump"
+    if (view === "about") {
+      // a run waits paused behind About: let go of held keys, ignore the rest
+      if (dirs[k] && !down) setHeld(dirs[k], false)
+      if (!down || event.isAutoRepeat) return true
+      if (k === Qt.Key_Escape || k === Qt.Key_F1 || k === Qt.Key_Backspace) closeAbout()
+      else if (k === Qt.Key_R) about.toggleLicense()
+      else if (k === Qt.Key_E) about.email()
+      else if (k === Qt.Key_C) about.copyEmail()
+      else if (k === Qt.Key_V) about.copyDetails()
+      // M and F11 still work below; nothing else reaches the game
+      if (k !== Qt.Key_M && k !== Qt.Key_F11) return true
+    }
     if (dirs[k]) {
       setHeld(dirs[k], down)
       if (down && view === "title" && dirs[k] === "jump" && !event.isAutoRepeat) start()
@@ -57,6 +75,7 @@ Item {
 
     if (k === Qt.Key_M) { save.muted = !save.muted; return true }
     if (k === Qt.Key_F11) { if (window) window.fullscreen = !window.fullscreen; return true }
+    if (k === Qt.Key_F1) { openAbout(); return true }
     if (k === Qt.Key_Return || k === Qt.Key_Enter) {
       if (view === "title" || view === "over" || view === "won") start()
       else if (view === "paused") view = "play"
@@ -75,6 +94,22 @@ Item {
       return true
     }
     return false
+  }
+
+  function openAbout() {
+    if (view === "about") return
+    if (view === "play") sfx.play("pause")
+    aboutFrom = view === "play" ? "paused" : view
+    view = "about"
+  }
+
+  function closeAbout() {
+    if (view === "about") view = aboutFrom
+  }
+
+  function openExternal(url) {
+    lastExternalUrl = url
+    if (externalLinks) Qt.openUrlExternally(url)
   }
 
   function start() {
@@ -144,7 +179,7 @@ Item {
     onTriggered: { app.game.t += frameTime; app.frame++ }
   }
 
-  onViewChanged: sfx.track = view === "title" ? "title" : view === "play" ? "jungle" : ""
+  onViewChanged: sfx.track = onTitle ? "title" : view === "play" ? "jungle" : ""
 
   function grabStage(path) {
     if (!stage.grabToImage(function(r) { if (!r.saveToFile(path)) console.warn("hyprfall: could not save " + path) }))
@@ -170,7 +205,7 @@ Item {
       px: app.px
       theme: app.theme
       // the title screen shows the jungle without the hero
-      showHero: app.view !== "title"
+      showHero: !app.onTitle
     }
 
     // ------------------------------------------------------------ HUD --
@@ -178,7 +213,7 @@ Item {
       width: parent.width
       height: 14 * app.px
       color: app.theme.hud
-      visible: app.view !== "title"
+      visible: !app.onTitle
 
       Row {
         anchors.left: parent.left
@@ -262,7 +297,7 @@ Item {
         "Mind the tarballs, the python and the dumpster fires.",
         "",
         "←/→ or h/l run   Space jump   ↑/↓ or k/j climb",
-        "P pause   M mute   F11 fullscreen   Esc quit"
+        "P pause   M mute   F11 fullscreen   F1 about   Esc quit"
       ]
       footer: "Press Enter"
       scores: app.save.scores
@@ -274,7 +309,7 @@ Item {
       px: app.px
       title: "PAUSED"
       subtitle: "Touch grass. The jungle will wait."
-      lines: ["Enter or P to keep going", "Q to give up and take your score"]
+      lines: ["Enter or P to keep going", "Q to give up and take your score", "F1 about"]
     }
 
     Card {
@@ -291,6 +326,14 @@ Item {
       footer: "Enter to play again   ·   Esc for the title"
       scores: app.save.scores
       highlight: app.rank
+    }
+
+    AboutCard {
+      id: about
+      visible: app.view === "about"
+      theme: app.theme
+      px: app.px
+      onOpenUrl: function(url) { app.openExternal(url) }
     }
   }
 }

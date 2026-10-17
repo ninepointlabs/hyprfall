@@ -2,6 +2,8 @@ import QtQuick
 import QtTest
 import "../app"
 import "../app/Engine.js" as Engine
+import "../app/About.js" as About
+import Quickshell
 
 // End-to-end: real key events from the title screen into the jungle and out
 // again, with the real 60 Hz loop. Run with test/ui.sh (headless).
@@ -78,6 +80,67 @@ Item {
       verify(theme.revision > rev)
       compare(String(theme.role("teeLogo")), "#ff0000")
       compare(String(theme.canopy), "#00ff00")
+    }
+
+    function test_3_about() {
+      // nothing may reach a mail client; copies land in the stub's clipboard
+      app.externalLinks = false
+      app.forceActiveFocus()
+      // test 1 left a run going: give up and go back to the title
+      keyClick(Qt.Key_Escape)
+      keyClick(Qt.Key_Q)
+      keyClick(Qt.Key_Escape)
+      compare(app.view, "title")
+      keyClick(Qt.Key_F1)
+      compare(app.view, "about")
+      verify(app.onTitle, "the title jungle stays behind About")
+      compare(findChild(app, "aboutVersion").text, "Version dev")
+      compare(findChild(app, "aboutPrivacy").text, About.ABOUT.privacy)
+
+      keyClick(Qt.Key_R)
+      var license = findChild(app, "aboutLicenseText")
+      verify(license.visible)
+      verify(license.text.indexOf("MIT License\n\nCopyright (c) 2026 Nine Point Labs\n\nPermission is hereby granted") === 0, license.text.slice(0, 60))
+      keyClick(Qt.Key_R)
+      verify(!license.visible)
+
+      keyClick(Qt.Key_C)
+      compare(Quickshell.clipboardText, "help@ninepointlabs.com")
+      keyClick(Qt.Key_V)
+      verify(Quickshell.clipboardText.indexOf("Hyprfall dev\nQuickshell ?, Qt ?\n") === 0, Quickshell.clipboardText)
+      keyClick(Qt.Key_E)
+      verify(app.lastExternalUrl.indexOf("mailto:help@ninepointlabs.com?subject=Hyprfall%20dev&body=") === 0, app.lastExternalUrl)
+
+      // keys that mean something in the jungle do nothing here
+      keyClick(Qt.Key_Return)
+      keyClick(Qt.Key_Space)
+      compare(app.view, "about")
+      keyClick(Qt.Key_Escape)
+      compare(app.view, "title")
+
+      // mid-run, About pauses the game and Esc comes back to the pause card
+      keyClick(Qt.Key_Return)
+      compare(app.view, "play")
+      tryCompare(app.game.p, "mode", "ground", 3000)
+      keyPress(Qt.Key_L)
+      wait(100)
+      keyClick(Qt.Key_F1)
+      compare(app.view, "about")
+      keyRelease(Qt.Key_L)
+      verify(!app.held.right, "a key let go behind About is let go")
+      var t = app.game.time
+      wait(300)
+      compare(app.game.time, t)
+      keyClick(Qt.Key_F1)
+      compare(app.view, "paused")
+      keyClick(Qt.Key_F1)
+      compare(app.view, "about")
+      keyClick(Qt.Key_Backspace)
+      compare(app.view, "paused")
+      keyClick(Qt.Key_Return)
+      compare(app.view, "play")
+      wait(200)
+      verify(app.game.time < t, "clock runs again")
     }
   }
 }

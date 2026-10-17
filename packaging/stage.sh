@@ -5,7 +5,7 @@
 #
 #   packaging/stage.sh <destdir> <version>
 #
-#   /usr/share/hyprfall/{app,bin,VERSION}   the game and its launcher
+#   /usr/share/hyprfall/{app,bin,VERSION,LICENSE}   the game and its launcher
 #   /usr/bin/hyprfall                       symlink to the launcher
 #   /usr/share/applications/hyprfall.desktop
 #   /usr/share/icons/hicolor/256x256/apps/hyprfall.png
@@ -20,6 +20,7 @@ share="$dest/usr/share/hyprfall"
 mkdir -p "$share" "$dest/usr/bin"
 cp -r "$here/app" "$here/bin" "$share/"
 echo "$version" >"$share/VERSION"
+install -m644 "$here/LICENSE" "$share/LICENSE"  # for About (F1) and --about
 chmod 755 "$share/bin/hyprfall"
 find "$share" -type d -exec chmod 755 {} +
 find "$share/app" -type f -exec chmod 644 {} +
