@@ -47,6 +47,8 @@ test("license facts come from LICENSE", () => {
 
 test("it's Nine Point Labs, three words", () => {
   for (const p of ["LICENSE", "README.md", "site/index.html"]) {
+    // site/ is export-ignore, so it's missing from release tarballs and CI's checkout
+    if (!fs.existsSync(path.join(root, p))) continue
     assert(!/ninepoint labs/i.test(fs.readFileSync(path.join(root, p), "utf8")), p)
   }
   for (const f of code) assert(!/ninepoint labs/i.test(f.text), f.p)
