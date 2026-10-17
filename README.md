@@ -80,6 +80,7 @@ picket signs that say **NO AI**.
 | P or Esc | Pause |
 | M | Mute |
 | F11 | Fullscreen |
+| F1 | About (pauses a run; Esc or F1 goes back) |
 | Enter | Start, unpause, play again |
 
 ## Install
@@ -118,6 +119,12 @@ sudo dnf install ./hyprfall-0.1.0-1.noarch.rpm
 
 Then launch **Hyprfall** from the app launcher (Super + Space), or run
 `hyprfall`. High scores live in `~/.local/state/hyprfall/save.json`.
+
+**About** (F1 on the title screen, the pause card or mid-run) shows the
+version, license, credits, what the game stores (no network, no telemetry)
+and the support address, [help@ninepointlabs.com](mailto:help@ninepointlabs.com),
+with keys to email it or copy it and your version details.
+`hyprfall --about` prints the same in a terminal, next to `hyprfall --version`.
 
 ### From source, into your home directory
 
@@ -168,6 +175,7 @@ palette.
 
 ```bash
 node test/engine.js          # engine: the LFSR ring, every screen crossable, fuzzed random play
+node test/about.js           # About facts, --about, packaged LICENSE, privacy names every network host
 test/ui.sh                   # headless end-to-end UI test with real key events
 tools/snap.sh /tmp/shots start scene:protest time:3 at:164,128 shot:gnomes.png
 python3 tools/make-sounds.py # regenerate app/sounds/
@@ -195,4 +203,4 @@ any gnome. The hero is a fond caricature. The protesting gnomes are a joke
 at a debate, not at anyone in it; some of them make good points, and they
 all have excellent signs.
 
-MIT licensed. Made by [Ninepoint Labs](https://ninepointlabs.com).
+MIT licensed. Made by [Nine Point Labs](https://ninepointlabs.com).
