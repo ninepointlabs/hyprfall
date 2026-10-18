@@ -101,20 +101,20 @@ autonomix-cli add https://github.com/ninepointlabs/hyprfall
 **Arch / Omarchy:**
 
 ```bash
-sudo pacman -U hyprfall-0.1.1-1-any.pkg.tar.zst
+sudo pacman -U hyprfall-0.1.2-1-any.pkg.tar.zst
 ```
 
 **Debian 13+** (on Debian 13, Quickshell comes from trixie-backports; Debian
 14, sid and Ubuntu 26.10+ have it in the main archive):
 
 ```bash
-sudo apt install -t trixie-backports ./hyprfall_0.1.1-1_all.deb
+sudo apt install -t trixie-backports ./hyprfall_0.1.2-1_all.deb
 ```
 
 **Fedora 43+:**
 
 ```bash
-sudo dnf install ./hyprfall-0.1.1-1.noarch.rpm
+sudo dnf install ./hyprfall-0.1.2-1.noarch.rpm
 ```
 
 Then launch **Hyprfall** from the app launcher (Super + Space), or run
