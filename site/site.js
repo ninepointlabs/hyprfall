@@ -225,6 +225,7 @@ function setTheme(slug) {
 
 for (const id of ["swatches", "swatches-2"]) {
   const holder = document.getElementById(id)
+  holder.textContent = ""
   for (const [slug, t] of Object.entries(THEMES)) {
     const b = document.createElement("button")
     b.type = "button"
