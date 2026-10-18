@@ -5,11 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hyprfall: a jungle platformer for Omarchy</title>
   <meta name="description" content="Swing on ethernet cables over tarballs and anti-AI garden gnomes. Find 32 treasures in 20 minutes. A native Omarchy game that wears your theme.">
+  <link rel="canonical" href="https://hyprfall.ninepointlabs.com/">
+  <meta property="og:type" content="website">
   <meta property="og:title" content="Hyprfall">
   <meta property="og:description" content="A jungle platformer for Omarchy. Swing on ethernet cables, hop the anti-AI garden gnomes, find 32 treasures in 20 minutes.">
-  <meta property="og:image" content="https://hyprfall.ninepointlabs.com/img/title.webp">
+  <meta property="og:image" content="https://hyprfall.ninepointlabs.com/img/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="og:url" content="https://hyprfall.ninepointlabs.com/">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://hyprfall.ninepointlabs.com/img/og.jpg">
   <link rel="icon" type="image/png" href="img/icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,7 +41,17 @@
       <div class="stage">
         <canvas id="banner" width="1280" height="448" aria-label="The hero runs through the jungle and hops across the hats of three garden gnomes holding anti-AI picket signs"></canvas>
       </div>
-      <div class="swatches" id="swatches" role="group" aria-label="Pick a theme"></div>
+      <!-- Pre-rendered so the hero keeps its height before site.js runs; site.js rebuilds these from THEMES. -->
+      <div class="swatches" id="swatches" role="group" aria-label="Pick a theme">
+        <button type="button" data-theme="tokyo-night" aria-pressed="true"><span class="chips"><i style="background:#1a1b26"></i><i style="background:#9ece6a"></i><i style="background:#f7768e"></i><i style="background:#7aa2f7"></i></span>Tokyo Night</button>
+        <button type="button" data-theme="catppuccin" aria-pressed="false"><span class="chips"><i style="background:#1e1e2e"></i><i style="background:#a6e3a1"></i><i style="background:#f38ba8"></i><i style="background:#89b4fa"></i></span>Catppuccin</button>
+        <button type="button" data-theme="gruvbox" aria-pressed="false"><span class="chips"><i style="background:#282828"></i><i style="background:#a9b665"></i><i style="background:#ea6962"></i><i style="background:#7daea3"></i></span>Gruvbox</button>
+        <button type="button" data-theme="rose-pine" aria-pressed="false"><span class="chips"><i style="background:#faf4ed"></i><i style="background:#286983"></i><i style="background:#b4637a"></i><i style="background:#56949f"></i></span>Rosé Pine</button>
+        <button type="button" data-theme="everforest" aria-pressed="false"><span class="chips"><i style="background:#2d353b"></i><i style="background:#a7c080"></i><i style="background:#e67e80"></i><i style="background:#7fbbb3"></i></span>Everforest</button>
+        <button type="button" data-theme="kanagawa" aria-pressed="false"><span class="chips"><i style="background:#1f1f28"></i><i style="background:#76946a"></i><i style="background:#c34043"></i><i style="background:#dcd7ba"></i></span>Kanagawa</button>
+        <button type="button" data-theme="retro-82" aria-pressed="false"><span class="chips"><i style="background:#05182e"></i><i style="background:#028391"></i><i style="background:#f85525"></i><i style="background:#faa968"></i></span>Retro 82</button>
+        <button type="button" data-theme="flexoki-light" aria-pressed="false"><span class="chips"><i style="background:#FFFCF0"></i><i style="background:#879A39"></i><i style="background:#D14D41"></i><i style="background:#205EA6"></i></span>Flexoki Light</button>
+      </div>
       <p class="hint">Click a theme. That's what <code>omarchy theme set</code> does to the jungle, live, mid-swing.</p>
 
       <div class="cta">

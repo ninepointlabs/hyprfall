@@ -6,8 +6,27 @@
   --dim: #8b91a8;
   --accent: #7aa2f7;
   --game-bg: #0e0e14;
-  --pixel: "Press Start 2P", monospace;
-  --mono: "JetBrains Mono", ui-monospace, monospace;
+  --pixel: "Press Start 2P", "Press Start 2P fallback", monospace;
+  --mono: "JetBrains Mono", "JetBrains Mono fallback", ui-monospace, monospace;
+}
+
+/* Local fallbacks sized to the web fonts' metrics, so text takes the same
+   space before and after the fonts load (no layout shift on swap).
+   Press Start 2P is 1em wide per glyph, these monospace fonts 0.6em. */
+@font-face {
+  font-family: "Press Start 2P fallback";
+  src: local("Liberation Mono"), local("Courier New"), local("Cousine"), local("DejaVu Sans Mono"), local("Menlo"), local("Consolas");
+  size-adjust: 166.67%;
+  ascent-override: 60%;
+  descent-override: 0%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "JetBrains Mono fallback";
+  src: local("Liberation Mono"), local("Courier New"), local("Cousine"), local("DejaVu Sans Mono"), local("Menlo"), local("Consolas");
+  ascent-override: 102%;
+  descent-override: 30%;
+  line-gap-override: 0%;
 }
 
 * { box-sizing: border-box; }
@@ -81,7 +100,7 @@ main section { max-width: 1120px; margin: 0 auto; padding: 72px 16px 0; }
   overflow: hidden;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
 }
-#banner { display: block; width: 100%; height: auto; image-rendering: pixelated; }
+#banner { display: block; width: 100%; height: auto; aspect-ratio: auto 1280 / 448; image-rendering: pixelated; }
 
 .swatches { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 18px 0 6px; }
 .swatches button {
@@ -127,6 +146,7 @@ main section { max-width: 1120px; margin: 0 auto; padding: 72px 16px 0; }
   border: 3px solid #000;
   outline: 1px solid var(--line);
   border-radius: 4px;
+  aspect-ratio: auto 16 / 10;
 }
 
 /* ---------------------------------------------------------- features -- */
