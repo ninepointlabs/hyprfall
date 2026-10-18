@@ -30,9 +30,12 @@ Rectangle {
     return s.indexOf("file://") === 0 ? decodeURIComponent(s.slice(7)) : s
   }
 
-  // the same VERSION file `hyprfall --version` reads; LICENSE sits next to it
-  FileView { id: versionFile; path: card.localPath(Qt.resolvedUrl("../VERSION")); printErrors: false }
-  FileView { id: licenseFile; path: card.localPath(Qt.resolvedUrl("../LICENSE")); printErrors: false }
+  // the same VERSION file `hyprfall --version` reads; LICENSE sits next to it.
+  // Quickshell blackholes Qt.resolvedUrl outside the shell dir, so go from
+  // shellDir; the test stub has none and resolves the URL instead.
+  readonly property string topDir: Quickshell.shellDir ? Quickshell.shellDir + "/.." : localPath(Qt.resolvedUrl(".."))
+  FileView { id: versionFile; path: card.topDir + "/VERSION"; printErrors: false }
+  FileView { id: licenseFile; path: card.topDir + "/LICENSE"; printErrors: false }
 
   function copy(text, what) {
     Quickshell.clipboardText = text

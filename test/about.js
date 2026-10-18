@@ -101,4 +101,12 @@ test("hyprfall --about prints the same facts as the About screen", () => {
   assert(/^Built with {2}/m.test(out))
 })
 
+test("About finds VERSION and LICENSE from Quickshell.shellDir", () => {
+  // real Quickshell turns Qt.resolvedUrl("../X") outside the shell dir into
+  // qrc:/qs-blackhole, so the installed game showed "Version dev" in v0.1.1
+  const card = fs.readFileSync(path.join(root, "app", "AboutCard.qml"), "utf8")
+  assert(/Quickshell\.shellDir \+ "\/\.\."/.test(card), "AboutCard.qml should start from Quickshell.shellDir")
+  assert(!/resolvedUrl\("\.\.\/(VERSION|LICENSE)"\)/.test(card), "AboutCard.qml resolves a file outside the shell dir")
+})
+
 console.log(passed + " passed")
