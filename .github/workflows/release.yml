@@ -1,6 +1,6 @@
 name: Release
 
-# Push a tag like v0.1.0 to build the Arch/Omarchy, .deb and .rpm packages,
+# Push a tag like v0.1.0 to build the Arch/Omarchy and .deb packages,
 # install each on its distribution, run the game headless from the installed
 # package, build and check the AppImage (appimage.yml), and publish them all.
 on:
@@ -36,7 +36,7 @@ jobs:
           pacman -U --noconfirm hyprfall-*.pkg.tar.zst
           hyprfall --version
           su builder -c "cd /tmp && hyprfall --selftest"
-      - name: Build .deb and .rpm
+      - name: Build .deb
         run: |
           version="${GITHUB_REF_NAME#v}"
           cd packaging
@@ -45,9 +45,8 @@ jobs:
           tar -xzf nfpm.tar.gz nfpm && rm nfpm.tar.gz
           ./stage.sh stage "$version"
           VERSION="$version" ./nfpm package -f nfpm.yaml -p deb -t .
-          VERSION="$version" ./nfpm package -f nfpm.yaml -p rpm -t .
           mkdir ../dist
-          mv hyprfall-*.pkg.tar.zst hyprfall_*.deb hyprfall-*.rpm ../dist/
+          mv hyprfall-*.pkg.tar.zst hyprfall_*.deb ../dist/
           cd ../dist && for f in *; do sha256sum "$f" > "$f.sha256"; done && ls -l
       - uses: actions/upload-artifact@v4
         with:
@@ -71,27 +70,13 @@ jobs:
           useradd -m u
           su u -c "cd /tmp && hyprfall --selftest"
 
-  test-rpm:
-    needs: package
-    runs-on: ubuntu-latest
-    container: fedora:latest
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: packages
-      - run: |
-          dnf -y install ./hyprfall-*.noarch.rpm shadow-utils util-linux
-          hyprfall --version
-          useradd -m u
-          su u -c "cd /tmp && hyprfall --selftest"
-
-  # The AppImage, for every other distribution: hyprfall-<v>-x86_64.AppImage
+  # The AppImage, for Fedora and every other distribution: hyprfall-<v>-x86_64.AppImage
   # with its .zsync (in-place updates) and .sha256.
   appimage:
     uses: ./.github/workflows/appimage.yml
 
   publish:
-    needs: [package, test-deb, test-rpm, appimage]
+    needs: [package, test-deb, appimage]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
@@ -114,10 +99,8 @@ jobs:
             "" \
             "**Debian 13+:** \`sudo apt install -t trixie-backports ./hyprfall_$v-1_all.deb\` (Quickshell comes from trixie-backports on Debian 13; Debian 14, sid and Ubuntu 26.10+ have it in the main archive)" \
             "" \
-            "**Fedora 43+:** \`sudo dnf install ./hyprfall-$v-1.noarch.rpm\`" \
+            "**Fedora and any other Linux (AppImage, x86_64, glibc 2.35+):** \`chmod +x hyprfall-$v-x86_64.AppImage && ./hyprfall-$v-x86_64.AppImage\` (Quickshell and Qt are inside; add \`--install-desktop-entry\` to put it in your app menu, or let Gear Lever or AppImageLauncher manage it)" \
             "" \
-            "**Any other Linux (AppImage, x86_64, glibc 2.35+):** \`chmod +x hyprfall-$v-x86_64.AppImage && ./hyprfall-$v-x86_64.AppImage\` (Quickshell and Qt are inside; add \`--install-desktop-entry\` to put it in your app menu, or let Gear Lever or AppImageLauncher manage it)" \
-            "" \
-            "Then launch **Hyprfall** from your app launcher, or run \`hyprfall\`. Each package was installed on its distro and the game run headless from it (\`hyprfall --selftest\`), and the AppImage was run on a clean Ubuntu 22.04 under X11 and Wayland, before this release was published.")
+            "Hyprfall needs Quickshell 0.3 or newer (the AppImage brings its own). Then launch **Hyprfall** from your app launcher, or run \`hyprfall\`. Each package was installed on its distro and the game run headless from it (\`hyprfall --selftest\`), and the AppImage was run on a clean Ubuntu 22.04 under X11 and Wayland, before this release was published.")
           gh release create "$GITHUB_REF_NAME" hyprfall* \
             --repo "$GITHUB_REPOSITORY" --title "Hyprfall $GITHUB_REF_NAME" --generate-notes --notes "$notes"

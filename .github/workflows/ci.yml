@@ -17,6 +17,8 @@ jobs:
         run: node test/engine.js
       - name: About tests
         run: node test/about.js
+      - name: Launcher tests
+        run: node test/launcher.js
       - name: Headless UI test
         run: test/ui.sh
       - name: Launch the real app headless

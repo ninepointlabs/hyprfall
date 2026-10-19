@@ -1,6 +1,6 @@
 # Maintainer: Tim <tim@ninepointlabs.com>
 pkgname=hyprfall
-pkgver=0.1.3
+pkgver=0.1.4
 pkgrel=1
 pkgdesc='Jungle platformer native to Omarchy: ethernet cables, tarballs and anti-AI garden gnomes'
 arch=('any')
@@ -9,7 +9,7 @@ license=('MIT')
 depends=(
   'bash'
   'hicolor-icon-theme'
-  'quickshell'
+  'quickshell>=0.3'
   'qt6-declarative'
 )
 optdepends=(

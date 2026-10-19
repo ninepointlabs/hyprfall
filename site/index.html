@@ -159,8 +159,8 @@
     <section id="install">
       <h2 class="center">Install</h2>
       <p class="center narrow">Every release ships an Arch/Omarchy package, a <code>.deb</code> and an
-        <code>.rpm</code>. Each one is installed on its distro and the game run from it before
-        the release goes out. <span id="version-note"></span></p>
+        AppImage. Each one is installed on its distro and the game run from it before
+        the release goes out. The packages need Quickshell 0.3 or newer; the AppImage brings its own. <span id="version-note"></span></p>
 
       <div class="installs">
         <div class="install">
@@ -179,9 +179,9 @@
           <pre><code data-cmd="apt">sudo apt install -t trixie-backports ./hyprfall_*_all.deb</code></pre>
         </div>
         <div class="install">
-          <h3>Fedora 43+</h3>
-          <p><a class="asset" data-match="noarch.rpm" href="https://github.com/ninepointlabs/hyprfall/releases/latest">Download the .rpm</a>, then:</p>
-          <pre><code data-cmd="dnf">sudo dnf install ./hyprfall-*.noarch.rpm</code></pre>
+          <h3>Fedora and other Linux (AppImage)</h3>
+          <p><a class="asset" data-match="x86_64.AppImage" href="https://github.com/ninepointlabs/hyprfall/releases/latest">Download the AppImage</a>. Quickshell and Qt are inside; any x86_64 distro from 2022 on (glibc 2.35+), Wayland or X11.</p>
+          <pre><code data-cmd="appimage">chmod +x hyprfall-*-x86_64.AppImage && ./hyprfall-*-x86_64.AppImage</code></pre>
         </div>
         <div class="install wide">
           <h3>From source, into your home directory</h3>

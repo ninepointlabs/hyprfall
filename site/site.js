@@ -249,7 +249,7 @@ fetch("https://api.github.com/repos/ninepointlabs/hyprfall/releases/latest")
       a.href = asset.browser_download_url
       a.textContent = `Download ${asset.name}`
       const code = a.closest(".install").querySelector("code[data-cmd]")
-      if (code) code.textContent = code.textContent.replace(/hyprfall[-_]\*[^ ]*/, "./" + asset.name).replace("././", "./")
+      if (code) code.textContent = code.textContent.replace(/hyprfall[-_]\*[^ ]*/g, "./" + asset.name).replaceAll("././", "./")
     }
   })
   .catch(() => {})

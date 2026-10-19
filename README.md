@@ -88,8 +88,9 @@ picket signs that say **NO AI**.
 ### Packages
 
 Every [release](https://github.com/ninepointlabs/hyprfall/releases) ships an
-Arch/Omarchy package, a `.deb` and an `.rpm`. Each one is installed on its
-distro and the game run from it before the release goes out.
+Arch/Omarchy package and a `.deb`. Each one is installed on its distro and
+the game run from it before the release goes out. Both need Quickshell 0.3 or
+newer from the distro; on Fedora, use the [AppImage](#other-linux-distros-appimage).
 
 **With [autonomix-cli](https://github.com/ninepointlabs/autonomix-cli)**,
 which installs and updates it from GitHub releases for you:
@@ -101,20 +102,14 @@ autonomix-cli add https://github.com/ninepointlabs/hyprfall
 **Arch / Omarchy:**
 
 ```bash
-sudo pacman -U hyprfall-0.1.3-1-any.pkg.tar.zst
+sudo pacman -U hyprfall-0.1.4-1-any.pkg.tar.zst
 ```
 
 **Debian 13+** (on Debian 13, Quickshell comes from trixie-backports; Debian
 14, sid and Ubuntu 26.10+ have it in the main archive):
 
 ```bash
-sudo apt install -t trixie-backports ./hyprfall_0.1.3-1_all.deb
-```
-
-**Fedora 43+:**
-
-```bash
-sudo dnf install ./hyprfall-0.1.3-1.noarch.rpm
+sudo apt install -t trixie-backports ./hyprfall_0.1.4-1_all.deb
 ```
 
 Then launch **Hyprfall** from the app launcher (Super + Space), or run
@@ -128,15 +123,15 @@ with keys to email it or copy it and your version details.
 
 ### Other Linux distros (AppImage)
 
-Not on Omarchy, Arch, Debian or Fedora, or no Quickshell package for your
+On Fedora, another distro, or no Quickshell 0.3+ package for your
 distro? Every release also ships `hyprfall-<version>-x86_64.AppImage`, with
 Quickshell and Qt inside. It runs on any x86_64 distribution from 2022 on
 (glibc 2.35+: Ubuntu 22.04, Debian 12, Fedora 39, openSUSE Leap 15.6 and
 newer), on Wayland or X11, and still follows your theme on Omarchy.
 
 ```bash
-chmod +x hyprfall-0.1.3-x86_64.AppImage
-./hyprfall-0.1.3-x86_64.AppImage
+chmod +x hyprfall-0.1.4-x86_64.AppImage
+./hyprfall-0.1.4-x86_64.AppImage
 ```
 
 To put it in your app menu and dock, let [Gear Lever](https://flathub.org/apps/it.mijorus.gearlever)
@@ -144,8 +139,8 @@ or [AppImageLauncher](https://github.com/TheAssassin/AppImageLauncher) take
 it (both also update it in place from GitHub releases), or have it add itself:
 
 ```bash
-./hyprfall-0.1.3-x86_64.AppImage --install-desktop-entry   # ~/.local/share/applications and icons
-./hyprfall-0.1.3-x86_64.AppImage --remove-desktop-entry    # takes them out again
+./hyprfall-0.1.4-x86_64.AppImage --install-desktop-entry   # ~/.local/share/applications and icons
+./hyprfall-0.1.4-x86_64.AppImage --remove-desktop-entry    # takes them out again
 ```
 
 If it won't start with a FUSE error, install your distro's `fuse3` package
@@ -193,7 +188,8 @@ Packages: `sudo pacman -R hyprfall`, `sudo apt remove hyprfall` or
 ### Away from Omarchy
 
 The AppImage brings everything it needs. For the packages or a source
-install you need a Wayland desktop with [Quickshell](https://quickshell.org); Qt 6
+install you need a Wayland desktop with [Quickshell](https://quickshell.org)
+0.3 or newer (the launcher says so if yours is older); Qt 6
 multimedia for sound and `jq` for the launcher's window placement are
 optional. `install.sh` checks for them and names the package for your
 distro. Without an Omarchy theme the jungle uses a built-in Tokyo Night
@@ -204,6 +200,7 @@ palette.
 ```bash
 node test/engine.js          # engine: the LFSR ring, every screen crossable, fuzzed random play
 node test/about.js           # About facts, --about, packaged LICENSE, privacy names every network host
+node test/launcher.js        # the launcher refuses Quickshell older than 0.3
 test/ui.sh                   # headless end-to-end UI test with real key events
 tools/snap.sh /tmp/shots start scene:protest time:3 at:164,128 shot:gnomes.png
 python3 tools/make-sounds.py # regenerate app/sounds/
@@ -214,8 +211,8 @@ tools/site.sh --serve        # preview the website (site/) at http://localhost:8
 
 Releases: bump `pkgver` in `packaging/PKGBUILD`, add a `<release>` to
 `packaging/com.ninepointlabs.hyprfall.metainfo.xml`, commit, and push a `vX.Y.Z`
-tag. `.github/workflows/release.yml` builds all three packages, installs each
-on Arch, Debian and Fedora, runs `hyprfall --selftest` from the installed
+tag. `.github/workflows/release.yml` builds both packages, installs each
+on Arch and Debian, runs `hyprfall --selftest` from the installed
 files, builds and checks the AppImage (`.github/workflows/appimage.yml`), and
 publishes the release.
 
@@ -223,8 +220,8 @@ The AppImage builds on Ubuntu 22.04 (locally: an `ubuntu:22.04` container):
 
 ```bash
 sudo packaging/appimage/deps.sh
-packaging/appimage/build.sh 0.1.3     # dist/hyprfall-0.1.3-x86_64.AppImage (+ .zsync, .sha256)
-packaging/appimage/test.sh dist/hyprfall-0.1.3-x86_64.AppImage
+packaging/appimage/build.sh 0.1.4     # dist/hyprfall-0.1.4-x86_64.AppImage (+ .zsync, .sha256)
+packaging/appimage/test.sh dist/hyprfall-0.1.4-x86_64.AppImage
 ```
 
 The engine (`app/Engine.js`) is plain JavaScript stepped at a fixed 60 Hz, so
