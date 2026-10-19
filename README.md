@@ -101,20 +101,20 @@ autonomix-cli add https://github.com/ninepointlabs/hyprfall
 **Arch / Omarchy:**
 
 ```bash
-sudo pacman -U hyprfall-0.1.2-1-any.pkg.tar.zst
+sudo pacman -U hyprfall-0.1.3-1-any.pkg.tar.zst
 ```
 
 **Debian 13+** (on Debian 13, Quickshell comes from trixie-backports; Debian
 14, sid and Ubuntu 26.10+ have it in the main archive):
 
 ```bash
-sudo apt install -t trixie-backports ./hyprfall_0.1.2-1_all.deb
+sudo apt install -t trixie-backports ./hyprfall_0.1.3-1_all.deb
 ```
 
 **Fedora 43+:**
 
 ```bash
-sudo dnf install ./hyprfall-0.1.2-1.noarch.rpm
+sudo dnf install ./hyprfall-0.1.3-1.noarch.rpm
 ```
 
 Then launch **Hyprfall** from the app launcher (Super + Space), or run
@@ -135,8 +135,8 @@ Quickshell and Qt inside. It runs on any x86_64 distribution from 2022 on
 newer), on Wayland or X11, and still follows your theme on Omarchy.
 
 ```bash
-chmod +x hyprfall-0.1.2-x86_64.AppImage
-./hyprfall-0.1.2-x86_64.AppImage
+chmod +x hyprfall-0.1.3-x86_64.AppImage
+./hyprfall-0.1.3-x86_64.AppImage
 ```
 
 To put it in your app menu and dock, let [Gear Lever](https://flathub.org/apps/it.mijorus.gearlever)
@@ -144,8 +144,8 @@ or [AppImageLauncher](https://github.com/TheAssassin/AppImageLauncher) take
 it (both also update it in place from GitHub releases), or have it add itself:
 
 ```bash
-./hyprfall-0.1.2-x86_64.AppImage --install-desktop-entry   # ~/.local/share/applications and icons
-./hyprfall-0.1.2-x86_64.AppImage --remove-desktop-entry    # takes them out again
+./hyprfall-0.1.3-x86_64.AppImage --install-desktop-entry   # ~/.local/share/applications and icons
+./hyprfall-0.1.3-x86_64.AppImage --remove-desktop-entry    # takes them out again
 ```
 
 If it won't start with a FUSE error, install your distro's `fuse3` package
@@ -223,8 +223,8 @@ The AppImage builds on Ubuntu 22.04 (locally: an `ubuntu:22.04` container):
 
 ```bash
 sudo packaging/appimage/deps.sh
-packaging/appimage/build.sh 0.1.2     # dist/hyprfall-0.1.2-x86_64.AppImage (+ .zsync, .sha256)
-packaging/appimage/test.sh dist/hyprfall-0.1.2-x86_64.AppImage
+packaging/appimage/build.sh 0.1.3     # dist/hyprfall-0.1.3-x86_64.AppImage (+ .zsync, .sha256)
+packaging/appimage/test.sh dist/hyprfall-0.1.3-x86_64.AppImage
 ```
 
 The engine (`app/Engine.js`) is plain JavaScript stepped at a fixed 60 Hz, so
