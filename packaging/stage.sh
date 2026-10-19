@@ -8,7 +8,7 @@
 #   /usr/share/hyprfall/{app,bin,VERSION,LICENSE}   the game and its launcher
 #   /usr/bin/hyprfall                       symlink to the launcher
 #   /usr/share/applications/hyprfall.desktop
-#   /usr/share/icons/hicolor/256x256/apps/hyprfall.png
+#   /usr/share/icons/hicolor/*/apps/hyprfall.{png,svg}   16-512 px and scalable
 
 set -euo pipefail
 
@@ -27,6 +27,8 @@ find "$share/app" -type f -exec chmod 644 {} +
 ln -sfn /usr/share/hyprfall/bin/hyprfall "$dest/usr/bin/hyprfall"
 
 install -Dm644 "$here/packaging/hyprfall.desktop" "$dest/usr/share/applications/hyprfall.desktop"
-install -Dm644 "$here/assets/icon.png" "$dest/usr/share/icons/hicolor/256x256/apps/hyprfall.png"
+for icon in "$here"/assets/icons/hicolor/*/apps/hyprfall.*; do
+  install -Dm644 "$icon" "$dest/usr/share/icons/hicolor/${icon#"$here/assets/icons/hicolor/"}"
+done
 install -Dm644 "$here/README.md" "$dest/usr/share/doc/hyprfall/README.md"
 install -Dm644 "$here/LICENSE" "$dest/usr/share/licenses/hyprfall/LICENSE"
