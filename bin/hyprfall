@@ -59,6 +59,17 @@ if ! command -v quickshell >/dev/null 2>&1; then
   exit 1
 fi
 
+# Quickshell 0.3 or newer: older ones reject the AppId pragma in shell.qml.
+# If no version can be read, carry on and let Quickshell speak for itself.
+qs_version="$(quickshell --version 2>/dev/null | head -n 1 | grep -oE '[0-9]+\.[0-9]+(\.[0-9]+)?' | head -n 1 || true)"
+if [[ $qs_version =~ ^([0-9]+)\.([0-9]+) ]] &&
+  ((BASH_REMATCH[1] == 0 && BASH_REMATCH[2] < 3)); then
+  msg="Hyprfall needs Quickshell 0.3 or newer (found $qs_version)."
+  echo "hyprfall: $msg" >&2
+  command -v notify-send >/dev/null 2>&1 && notify-send "Hyprfall" "$msg" || true
+  exit 1
+fi
+
 if [[ ${1:-} == "--selftest" ]]; then
   # No compositor needed: run offscreen with a throwaway runtime dir and
   # state, and let shell.qml report whether the game loop actually ran.

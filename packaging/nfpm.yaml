@@ -1,11 +1,12 @@
-# .deb and .rpm packages, built by the release workflow with nfpm
+# The .deb package, built by the release workflow with nfpm
 # (https://nfpm.goreleaser.com) from the same staged tree as the Arch package:
 #
 #   packaging/stage.sh packaging/stage 0.1.0
 #   VERSION=0.1.0 nfpm package -f packaging/nfpm.yaml -p deb -t packaging/
 #
-# Needs a distribution that packages Quickshell: Debian 13 (trixie-backports)
-# and newer, Ubuntu 26.10 and newer, Fedora 43 and newer.
+# Needs a distribution that packages Quickshell 0.3 or newer: Debian 13
+# (trixie-backports) and newer, Ubuntu 26.10 and newer. Fedora and the rest
+# get the AppImage.
 name: hyprfall
 arch: all
 platform: linux
@@ -58,7 +59,7 @@ overrides:
   deb:
     depends:
       - bash
-      - quickshell (>= 0.2)
+      - quickshell (>= 0.3)
       - qml6-module-qtquick
       - qml6-module-qtquick-window
       - qml6-module-qtqml-workerscript
@@ -66,12 +67,3 @@ overrides:
       - qml6-module-qtmultimedia
       - jq
       - libnotify-bin
-  rpm:
-    depends:
-      - bash
-      - quickshell >= 0.2
-      - qt6-qtdeclarative
-    recommends:
-      - qt6-qtmultimedia
-      - jq
-      - libnotify
