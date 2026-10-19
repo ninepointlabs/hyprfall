@@ -126,6 +126,33 @@ and the support address, [help@ninepointlabs.com](mailto:help@ninepointlabs.com)
 with keys to email it or copy it and your version details.
 `hyprfall --about` prints the same in a terminal, next to `hyprfall --version`.
 
+### Other Linux distros (AppImage)
+
+Not on Omarchy, Arch, Debian or Fedora, or no Quickshell package for your
+distro? Every release also ships `hyprfall-<version>-x86_64.AppImage`, with
+Quickshell and Qt inside. It runs on any x86_64 distribution from 2022 on
+(glibc 2.35+: Ubuntu 22.04, Debian 12, Fedora 39, openSUSE Leap 15.6 and
+newer), on Wayland or X11, and still follows your theme on Omarchy.
+
+```bash
+chmod +x hyprfall-0.1.2-x86_64.AppImage
+./hyprfall-0.1.2-x86_64.AppImage
+```
+
+To put it in your app menu and dock, let [Gear Lever](https://flathub.org/apps/it.mijorus.gearlever)
+or [AppImageLauncher](https://github.com/TheAssassin/AppImageLauncher) take
+it (both also update it in place from GitHub releases), or have it add itself:
+
+```bash
+./hyprfall-0.1.2-x86_64.AppImage --install-desktop-entry   # ~/.local/share/applications and icons
+./hyprfall-0.1.2-x86_64.AppImage --remove-desktop-entry    # takes them out again
+```
+
+If it won't start with a FUSE error, install your distro's `fuse3` package
+(it doesn't need the old `libfuse2`), or run it with
+`--appimage-extract-and-run`. `--version`, `--about`, `--tiled` and
+`--selftest` work as they do for `hyprfall`.
+
 ### From source, into your home directory
 
 ```bash
@@ -165,7 +192,8 @@ Packages: `sudo pacman -R hyprfall`, `sudo apt remove hyprfall` or
 
 ### Away from Omarchy
 
-You need a Wayland desktop with [Quickshell](https://quickshell.org); Qt 6
+The AppImage brings everything it needs. For the packages or a source
+install you need a Wayland desktop with [Quickshell](https://quickshell.org); Qt 6
 multimedia for sound and `jq` for the launcher's window placement are
 optional. `install.sh` checks for them and names the package for your
 distro. Without an Omarchy theme the jungle uses a built-in Tokyo Night
@@ -179,15 +207,25 @@ node test/about.js           # About facts, --about, packaged LICENSE, privacy n
 test/ui.sh                   # headless end-to-end UI test with real key events
 tools/snap.sh /tmp/shots start scene:protest time:3 at:164,128 shot:gnomes.png
 python3 tools/make-sounds.py # regenerate app/sounds/
-python3 tools/make-icon.py   # regenerate assets/icon.png (needs ImageMagick)
+python3 tools/make-icon.py   # regenerate assets/icon.png and assets/icons/ (needs ImageMagick)
 bin/hyprfall --selftest      # run the real app headless for a second
 tools/site.sh --serve        # preview the website (site/) at http://localhost:8642
 ```
 
-Releases: bump `pkgver` in `packaging/PKGBUILD`, commit, and push a `vX.Y.Z`
+Releases: bump `pkgver` in `packaging/PKGBUILD`, add a `<release>` to
+`packaging/com.ninepointlabs.hyprfall.metainfo.xml`, commit, and push a `vX.Y.Z`
 tag. `.github/workflows/release.yml` builds all three packages, installs each
 on Arch, Debian and Fedora, runs `hyprfall --selftest` from the installed
-files, and publishes the release.
+files, builds and checks the AppImage (`.github/workflows/appimage.yml`), and
+publishes the release.
+
+The AppImage builds on Ubuntu 22.04 (locally: an `ubuntu:22.04` container):
+
+```bash
+sudo packaging/appimage/deps.sh
+packaging/appimage/build.sh 0.1.2     # dist/hyprfall-0.1.2-x86_64.AppImage (+ .zsync, .sha256)
+packaging/appimage/test.sh dist/hyprfall-0.1.2-x86_64.AppImage
+```
 
 The engine (`app/Engine.js`) is plain JavaScript stepped at a fixed 60 Hz, so
 node tests it directly; the QML only draws and plays sounds. The tests check
