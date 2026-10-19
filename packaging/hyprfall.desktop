@@ -10,3 +10,4 @@ Terminal=false
 Categories=Game;ArcadeGame;
 Keywords=jungle;platformer;atari;retro;game;omarchy;
 StartupNotify=false
+StartupWMClass=hyprfall

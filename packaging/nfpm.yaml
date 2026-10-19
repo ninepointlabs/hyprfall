@@ -31,8 +31,24 @@ contents:
     type: symlink
   - src: ./stage/usr/share/applications/hyprfall.desktop
     dst: /usr/share/applications/hyprfall.desktop
+  - src: ./stage/usr/share/icons/hicolor/16x16/apps/hyprfall.png
+    dst: /usr/share/icons/hicolor/16x16/apps/hyprfall.png
+  - src: ./stage/usr/share/icons/hicolor/24x24/apps/hyprfall.png
+    dst: /usr/share/icons/hicolor/24x24/apps/hyprfall.png
+  - src: ./stage/usr/share/icons/hicolor/32x32/apps/hyprfall.png
+    dst: /usr/share/icons/hicolor/32x32/apps/hyprfall.png
+  - src: ./stage/usr/share/icons/hicolor/48x48/apps/hyprfall.png
+    dst: /usr/share/icons/hicolor/48x48/apps/hyprfall.png
+  - src: ./stage/usr/share/icons/hicolor/64x64/apps/hyprfall.png
+    dst: /usr/share/icons/hicolor/64x64/apps/hyprfall.png
+  - src: ./stage/usr/share/icons/hicolor/128x128/apps/hyprfall.png
+    dst: /usr/share/icons/hicolor/128x128/apps/hyprfall.png
   - src: ./stage/usr/share/icons/hicolor/256x256/apps/hyprfall.png
     dst: /usr/share/icons/hicolor/256x256/apps/hyprfall.png
+  - src: ./stage/usr/share/icons/hicolor/512x512/apps/hyprfall.png
+    dst: /usr/share/icons/hicolor/512x512/apps/hyprfall.png
+  - src: ./stage/usr/share/icons/hicolor/scalable/apps/hyprfall.svg
+    dst: /usr/share/icons/hicolor/scalable/apps/hyprfall.svg
   - src: ./stage/usr/share/doc/hyprfall/README.md
     dst: /usr/share/doc/hyprfall/README.md
   - src: ./stage/usr/share/licenses/hyprfall/LICENSE

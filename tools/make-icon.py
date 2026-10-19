@@ -4,9 +4,15 @@
 Draws from app/Sprites.js with a fixed Tokyo Night palette (the icon can't
 follow the live theme), writes a PPM, and lets ImageMagick scale and round it:
     python3 tools/make-icon.py
+
+Also writes the desktop icon set under assets/icons/hicolor: the same pixels
+as an SVG (one rect per run of a colour, so it stays crisp at any size) and
+PNGs from 16 to 512 px scaled from icon.png with nearest-neighbour, so the
+pixel art never blurs.
 """
 import os
 import re
+import shutil
 import subprocess
 import tempfile
 
@@ -64,3 +70,34 @@ with tempfile.TemporaryDirectory() as tmp:
                     "-fill", "white", "-draw", "roundrectangle 8,8 247,247 44,44", ")",
                     "-alpha", "off", "-compose", "CopyOpacity", "-composite", out], check=True)
     print("wrote", os.path.relpath(out))
+
+# The scalable icon: the 64x64 grid drawn into the same 240px square, 8px
+# border and 44px corner radius as icon.png.
+icons = os.path.join(here, "..", "assets", "icons", "hicolor")
+cell = 240 / S
+rects = []
+for y, row in enumerate(img):
+    x = 0
+    while x < S:
+        end = x
+        while end + 1 < S and row[end + 1] == row[x]:
+            end += 1
+        rects.append('<rect x="%g" y="%g" width="%g" height="%g" fill="#%s"/>'
+                     % (8 + x * cell, 8 + y * cell, (end - x + 1) * cell, cell, row[x]))
+        x = end + 1
+svg = os.path.join(icons, "scalable", "apps", "hyprfall.svg")
+os.makedirs(os.path.dirname(svg), exist_ok=True)
+with open(svg, "w") as f:
+    f.write('<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" shape-rendering="crispEdges">\n'
+            '<clipPath id="r"><rect x="8" y="8" width="240" height="240" rx="44"/></clipPath>\n'
+            '<g clip-path="url(#r)">\n' + "\n".join(rects) + '\n</g>\n</svg>\n')
+print("wrote", os.path.relpath(svg))
+
+for size in (16, 24, 32, 48, 64, 128, 256, 512):
+    png = os.path.join(icons, "%dx%d" % (size, size), "apps", "hyprfall.png")
+    os.makedirs(os.path.dirname(png), exist_ok=True)
+    if size == 256:
+        shutil.copyfile(out, png)
+    else:
+        subprocess.run(["magick", out, "-filter", "point", "-resize", "%dx%d" % (size, size), png], check=True)
+    print("wrote", os.path.relpath(png))
