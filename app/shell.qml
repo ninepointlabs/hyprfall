@@ -1,3 +1,6 @@
+//@ pragma AppId hyprfall
+// ^ the window's Wayland app_id (Quickshell 0.3+), so docks, launchers and
+//   window rules match it to hyprfall.desktop instead of org.quickshell.
 import QtQuick
 import Quickshell
 import Quickshell.Io

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- AppStream metadata, read by GNOME Software, KDE Discover, Gear Lever and
+     AppImageLauncher. Add a <release> here for every tag: the AppImage build
+     refuses to package a version that isn't listed. -->
+<component type="desktop-application">
+  <id>com.ninepointlabs.hyprfall</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <name>Hyprfall</name>
+  <summary>A jungle caper for Omarchy</summary>
+  <developer id="com.ninepointlabs">
+    <name>Nine Point Labs</name>
+  </developer>
+  <description>
+    <p>
+      A jungle platformer: swing on ethernet cables over tarballs and anti-AI garden gnomes,
+      and find 32 treasures in 20 minutes.
+    </p>
+    <p>
+      Hyprfall is made for Omarchy, where the jungle wears your current theme's colours and
+      repaints live when you switch themes. Everywhere else it plays in its own Tokyo Night colours.
+    </p>
+    <p>
+      No accounts, no telemetry and no network access. High scores and the mute switch are saved
+      in your home directory.
+    </p>
+  </description>
+  <launchable type="desktop-id">hyprfall.desktop</launchable>
+  <icon type="stock">hyprfall</icon>
+  <categories>
+    <category>Game</category>
+    <category>ArcadeGame</category>
+  </categories>
+  <keywords>
+    <keyword>jungle</keyword>
+    <keyword>platformer</keyword>
+    <keyword>retro</keyword>
+    <keyword>omarchy</keyword>
+  </keywords>
+  <url type="homepage">https://hyprfall.ninepointlabs.com</url>
+  <url type="bugtracker">https://github.com/ninepointlabs/hyprfall/issues</url>
+  <url type="vcs-browser">https://github.com/ninepointlabs/hyprfall</url>
+  <screenshots>
+    <screenshot type="default">
+      <caption>The title screen</caption>
+      <image>https://raw.githubusercontent.com/ninepointlabs/hyprfall/main/assets/screens/title.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Swinging on an ethernet cable over the swamp</caption>
+      <image>https://raw.githubusercontent.com/ninepointlabs/hyprfall/main/assets/screens/cable.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Finding treasure</caption>
+      <image>https://raw.githubusercontent.com/ninepointlabs/hyprfall/main/assets/screens/treasure.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>The tunnels under the jungle</caption>
+      <image>https://raw.githubusercontent.com/ninepointlabs/hyprfall/main/assets/screens/tunnel.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>A pit of node_modules</caption>
+      <image>https://raw.githubusercontent.com/ninepointlabs/hyprfall/main/assets/screens/deps.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>The anti-AI garden gnomes in their pit</caption>
+      <image>https://raw.githubusercontent.com/ninepointlabs/hyprfall/main/assets/screens/protest.png</image>
+    </screenshot>
+  </screenshots>
+  <supports>
+    <control>keyboard</control>
+  </supports>
+  <content_rating type="oars-1.1">
+    <content_attribute id="violence-cartoon">mild</content_attribute>
+  </content_rating>
+  <releases>
+    <release version="0.1.2" date="2026-10-18">
+      <description>
+        <p>The About screen shows the real version and the full license.</p>
+      </description>
+    </release>
+    <release version="0.1.1" date="2026-10-17">
+      <description>
+        <p>Adds the About screen (F1, or hyprfall --about).</p>
+      </description>
+    </release>
+    <release version="0.1.0" date="2026-10-15">
+      <description>
+        <p>First release.</p>
+      </description>
+    </release>
+  </releases>
+</component>
