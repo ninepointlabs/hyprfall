@@ -180,8 +180,11 @@
         </div>
         <div class="install">
           <h3>Fedora and other Linux (AppImage)</h3>
-          <p><a class="asset" data-match="x86_64.AppImage" href="https://github.com/ninepointlabs/hyprfall/releases/latest">Download the AppImage</a>. Quickshell and Qt are inside; any x86_64 distro from 2022 on (glibc 2.35+), Wayland or X11.</p>
+          <p><a class="asset" data-match="x86_64.AppImage" href="https://github.com/ninepointlabs/hyprfall/releases/latest">Download the AppImage</a>. Quickshell and Qt are inside; any x86_64 distro from 2022 on (glibc 2.35+: Ubuntu 22.04, Debian 12, Fedora 39 and newer), Wayland or X11.</p>
           <pre><code data-cmd="appimage">chmod +x hyprfall-*-x86_64.AppImage && ./hyprfall-*-x86_64.AppImage</code></pre>
+          <p>Add it to your app menu:</p>
+          <pre><code data-cmd="appimage-menu">./hyprfall-*-x86_64.AppImage --install-desktop-entry</code></pre>
+          <p>Or let <a href="https://flathub.org/apps/it.mijorus.gearlever">Gear Lever</a> or <a href="https://github.com/TheAssassin/AppImageLauncher">AppImageLauncher</a> do that and keep it updated.</p>
         </div>
         <div class="install wide">
           <h3>From source, into your home directory</h3>
